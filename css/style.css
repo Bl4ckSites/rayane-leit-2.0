@@ -1,13 +1,6 @@
 /* ==========================================================================
    RAIANE LEIT — style.css
-   Redesign "Glass Bio-Link" inspirado em referência visual fornecida.
-   --------------------------------------------------------------------------
-   CAMADAS (do fundo para frente):
-     0    → .page-bg                             (imagem raiane-bg.jpg fixa)
-     0.1  → .page-bg::after                      (overlay escuro degradê)
-     1/2  → #video-background-container / .video-overlay (legado, oculto)
-     10   → .main-container                      (conteúdo)
-     9999 → #age-modal                           (modal +18)
+   Layout: título + redes sociais no topo, cards glass logo abaixo.
    ========================================================================== */
 
 
@@ -28,19 +21,17 @@
     --glass-blur:            22px;
     --glass-saturate:        150%;
 
-    /* Brand colors dos ícones dos cards */
-    --brand-privacy:   #E8353C;
-    --brand-telegram:  #229ED9;
-    --brand-onlyfans:  #00AFF0;
-    --brand-fatalfans: #0B0B0B;
-    --brand-exclusivos:#7C3AED;
+    /* Brand colors */
+    --brand-privacy:    #E8353C;
+    --brand-telegram:   #229ED9;
+    --brand-onlyfans:   #00AFF0;
+    --brand-fatalfans:  #0B0B0B;
+    --brand-exclusivos: #7C3AED;
 
-    /* Raios */
     --radius-card:   20px;
     --radius-pill:   999px;
     --radius-circle: 50%;
 
-    /* Espaçamentos fluidos */
     --sp-xs: clamp(0.3rem, 0.6vw, 0.5rem);
     --sp-sm: clamp(0.5rem, 1vw, 0.7rem);
     --sp-md: clamp(0.7rem, 1.4vw, 1rem);
@@ -86,7 +77,7 @@ body.modal-active {
 }
 
 /* =========================================
-   3. FUNDO FULL-SCREEN  (camada 0)
+   3. FUNDO FULL-SCREEN
    ========================================= */
 .page-bg {
     position: fixed;
@@ -115,7 +106,7 @@ body.modal-active {
 }
 
 /* =========================================
-   4. CAMADAS LEGADAS DE VÍDEO — desativadas
+   4. CAMADAS LEGADAS DE VÍDEO (desativadas)
    ========================================= */
 #video-background-container,
 .video-overlay {
@@ -123,7 +114,7 @@ body.modal-active {
 }
 
 /* =========================================
-   5. CONTAINER PRINCIPAL  (camada 10)
+   5. CONTAINER PRINCIPAL
    ========================================= */
 .main-container {
     position: relative;
@@ -131,87 +122,86 @@ body.modal-active {
     width: 100%;
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: clamp(20px, 5vh, 56px) clamp(16px, 4vw, 24px) clamp(24px, 5vh, 48px);
+    padding: clamp(28px, 6vh, 64px) clamp(16px, 4vw, 24px) clamp(28px, 6vh, 56px);
     display: flex;
     flex-direction: column;
-    gap: clamp(16px, 3vh, 28px);
+    gap: clamp(22px, 4vh, 38px);
     min-height: 100vh;
     min-height: 100dvh;
 }
 
 /* =========================================
-   6. TOP BAR — redes sociais no topo
-   ========================================= */
-.top-bar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: clamp(4px, 1vw, 8px);
-    width: 100%;
-    padding: 0;
-}
-
-.top-socials {
-    display: flex;
-    align-items: center;
-    gap: clamp(4px, 1vw, 8px);
-}
-
-.social-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: var(--radius-circle);
-    color: #fff;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.social-link:hover,
-.social-link:focus-visible {
-    background: rgba(255, 255, 255, 0.14);
-    border-color: rgba(255, 255, 255, 0.28);
-    outline: none;
-    transform: translateY(-1px);
-}
-
-.social-link svg {
-    width: 16px;
-    height: 16px;
-    display: block;
-}
-
-/* Oculta o overlay duplicado (legado) */
-.hero-socials-overlay {
-    display: none !important;
-}
-
-/* =========================================
-   7. HERO — apenas título
+   6. HERO — TÍTULO + REDES SOCIAIS
    ========================================= */
 .hero-section {
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(6px, 1.2vh, 12px);
-    padding: clamp(6px, 1.5vh, 16px) 0;
+    justify-content: center;
+    text-align: center;
+    gap: clamp(14px, 2.5vh, 24px);
+    padding: clamp(4px, 1.5vh, 16px) 0;
 }
 
 .hero-title {
-    font-size: clamp(1.75rem, 5.5vw, 2.35rem);
+    font-size: clamp(1.85rem, 6vw, 2.4rem);
     font-weight: 700;
-    line-height: 1.15;
+    line-height: 1.12;
     letter-spacing: -0.02em;
     color: #fff;
     text-shadow:
         0 2px 22px rgba(0, 0, 0, 0.55),
         0 1px 3px rgba(0, 0, 0, 0.40);
+}
+
+/* =========================================
+   7. REDES SOCIAIS — BOTÕES RESPONSIVOS
+   --------------------------------------------------
+   Tamanho do botão: clamp(38px → 50px)
+   Tamanho do SVG:   45% do botão (responsivo junto)
+   ========================================= */
+.top-socials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(6px, 1.6vw, 12px);
+    width: 100%;
+}
+
+.social-link {
+    display: inline-grid;
+    place-items: center;
+    width: clamp(38px, 10vw, 50px);
+    height: clamp(38px, 10vw, 50px);
+    border-radius: var(--radius-circle);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    backdrop-filter: blur(10px) saturate(140%);
+    transition: background 0.22s ease, border-color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+    flex: 0 0 auto;
+}
+
+.social-link:hover,
+.social-link:focus-visible {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.30);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    outline: none;
+    transform: translateY(-2px);
+}
+
+.social-link:active {
+    transform: translateY(0);
+}
+
+.social-link svg {
+    width: 45%;
+    height: 45%;
+    display: block;
+    pointer-events: none;
 }
 
 /* =========================================
@@ -236,10 +226,10 @@ body.modal-active {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 66px;
+    min-height: clamp(58px, 9vh, 72px);
     padding: 12px 68px;
-    border-radius: var(--radius-card);
 
+    border-radius: var(--radius-card);
     background: var(--glass-bg);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
@@ -294,13 +284,16 @@ body.modal-active {
     z-index: 1;
 }
 
+/* --- Ícone circular colorido com SVG dentro --- */
 .card-icon {
     position: absolute;
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
+
+    width: clamp(38px, 9vw, 46px);
+    height: clamp(38px, 9vw, 46px);
+
     border-radius: var(--radius-circle);
     display: grid;
     place-items: center;
@@ -312,8 +305,8 @@ body.modal-active {
 }
 
 .card-icon svg {
-    width: 22px;
-    height: 22px;
+    width: 50%;
+    height: 50%;
     display: block;
 }
 
@@ -324,41 +317,7 @@ body.modal-active {
 .card-icon--exclusivos { background: var(--brand-exclusivos); }
 
 /* =========================================
-   9. FOOTER
-   ========================================= */
-.site-footer {
-    margin-top: auto;
-    text-align: center;
-    padding: var(--sp-md) 0 var(--sp-sm);
-    color: var(--color-text-soft);
-}
-
-.footer-divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--sp-sm);
-    margin-bottom: var(--sp-xs);
-    font-size: 1.1rem;
-    opacity: 0.7;
-}
-
-.footer-divider::before,
-.footer-divider::after {
-    content: '';
-    height: 1px;
-    width: 52px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-}
-
-.footer-text {
-    font-size: 0.82rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
-
-/* =========================================
-   10. MODAL +18  (camada 9999)
+   9. MODAL +18
    ========================================= */
 .modal-overlay {
     position: fixed;
@@ -618,43 +577,24 @@ body.modal-active {
 }
 
 /* =========================================
-   11. RESPONSIVO
+   10. RESPONSIVO
    ========================================= */
 @media (max-width: 380px) {
     .card-item {
         padding: 10px 60px;
-        min-height: 60px;
     }
     .card-icon {
-        width: 38px;
-        height: 38px;
         left: 10px;
-    }
-    .card-icon svg {
-        width: 18px;
-        height: 18px;
-    }
-    .social-link {
-        width: 30px;
-        height: 30px;
-    }
-    .social-link svg {
-        width: 14px;
-        height: 14px;
     }
 }
 
 @media (min-width: 700px) {
     .main-container {
-        padding-top: clamp(32px, 6vh, 72px);
-        padding-bottom: clamp(32px, 6vh, 72px);
-    }
-    .card-item {
-        min-height: 72px;
+        padding-top: clamp(36px, 7vh, 80px);
+        padding-bottom: clamp(36px, 7vh, 80px);
     }
 }
 
-/* Modal — telas pequenas */
 @media (max-width: 480px) {
     .modal-overlay {
         padding: var(--sp-sm);
@@ -692,7 +632,7 @@ body.modal-active {
 }
 
 /* =========================================
-   12. ACESSIBILIDADE
+   11. ACESSIBILIDADE
    ========================================= */
 :focus-visible {
     outline: 2px solid #fff;
@@ -710,7 +650,8 @@ body.modal-active {
 }
 
 @media (prefers-reduced-transparency: reduce) {
-    .card-item {
+    .card-item,
+    .social-link {
         background: rgba(0, 0, 0, 0.55);
         -webkit-backdrop-filter: none;
         backdrop-filter: none;
