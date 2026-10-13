@@ -1,57 +1,58 @@
 /* ==========================================================================
-   RAIANE LEITE — style.css
-   REDESIGN: Fotografia fullscreen + header centralizado + cards glassmorphism
-   REFERÊNCIA: Natasha Naturista
-   PRESERVAÇÃO: 100% do conteúdo, links, ordem dos cards e funcionalidades
+   RAIANE LEIT — style.css
+   Redesign "Glass Bio-Link" inspirado em referência visual fornecida.
+   --------------------------------------------------------------------------
+   CAMADAS (do fundo para frente):
+     0    → .page-bg                             (imagem raiane-bg.jpg fixa)
+     0.1  → .page-bg::after                      (overlay escuro degradê)
+     1/2  → #video-background-container / .video-overlay (legado, oculto)
+     10   → .main-container                      (conteúdo)
+     9999 → #age-modal                           (modal +18)
    ========================================================================== */
 
+
 /* =========================================
-   VARIÁVEIS E RESET
+   1. VARIÁVEIS
    ========================================= */
-   :root {
-    /* Cores - Paleta Clean/Dark */
+:root {
     --color-bg: #000000;
     --color-text: #FFFFFF;
-    --color-text-muted: rgba(255, 255, 255, 0.75);
-    --color-accent: #E50914;
-    --color-accent-light: #FF1A1A;
+    --color-text-soft: rgba(255, 255, 255, 0.75);
+    --color-accent: #E8353C;
 
-    /* Overlay e transparências */
-    --color-overlay: rgba(0, 0, 0, 0.85);
-    --bg-overlay-opacity: 0.42;
-    
-    /* Glassmorphism */
-    --card-bg: rgba(255, 255, 255, 0.08);
-    --card-bg-hover: rgba(255, 255, 255, 0.14);
-    --card-border: rgba(255, 255, 255, 0.25);
-    --card-border-hover: rgba(255, 255, 255, 0.45);
-    --card-blur: 10px;
-    --card-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+    /* Glass tokens */
+    --glass-bg:              rgba(255, 255, 255, 0.06);
+    --glass-bg-hover:        rgba(255, 255, 255, 0.11);
+    --glass-border:          rgba(255, 255, 255, 0.16);
+    --glass-border-strong:   rgba(255, 255, 255, 0.30);
+    --glass-blur:            22px;
+    --glass-saturate:        150%;
 
-    /* Espaçamentos */
-    --spacing-xs: clamp(0.4rem, 0.8vw, 0.6rem);
-    --spacing-sm: clamp(0.6rem, 1.2vw, 0.9rem);
-    --spacing-md: clamp(0.9rem, 1.8vw, 1.4rem);
-    --spacing-lg: clamp(1.4rem, 3vw, 2.2rem);
-    --spacing-xl: clamp(2rem, 4vw, 3rem);
+    /* Brand colors dos ícones dos cards */
+    --brand-privacy:   #E8353C;
+    --brand-telegram:  #229ED9;
+    --brand-onlyfans:  #00AFF0;
+    --brand-fatalfans: #0B0B0B;
+    --brand-exclusivos:#7C3AED;
 
     /* Raios */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 24px;
-    --radius-card: 26px;
-    --radius-pill: 50px;
+    --radius-card:   20px;
+    --radius-pill:   999px;
     --radius-circle: 50%;
 
-    /* Larguras */
-    --max-width-content: 600px;
-    --scrollbar-compensation: 0px;
+    /* Espaçamentos fluidos */
+    --sp-xs: clamp(0.3rem, 0.6vw, 0.5rem);
+    --sp-sm: clamp(0.5rem, 1vw, 0.7rem);
+    --sp-md: clamp(0.7rem, 1.4vw, 1rem);
+    --sp-lg: clamp(1rem, 2vw, 1.8rem);
 
-    /* Imagem de fundo — SUBSTITUA pela URL real da Raiane */
-    --bg-image-url: url('raiane-bg.jpg');
+    --max-width: 480px;
+    --scrollbar-compensation: 0px;
 }
 
+/* =========================================
+   2. RESET / BASE
+   ========================================= */
 *,
 *::before,
 *::after {
@@ -64,19 +65,16 @@
 html {
     -webkit-text-size-adjust: 100%;
     background-color: var(--color-bg);
-    scroll-behavior: smooth;
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--color-bg);
     color: var(--color-text);
     line-height: 1.5;
     overflow-x: hidden;
     min-height: 100vh;
     min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -88,250 +86,305 @@ body.modal-active {
 }
 
 /* =========================================
-   CAMADA DE FUNDO — IMAGEM
+   3. FUNDO FULL-SCREEN  (camada 0)
    ========================================= */
-.bg-image-layer {
+.page-bg {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    width: 100dvw;
-    height: 100vh;
-    height: 100dvh;
+    inset: 0;
     z-index: 0;
-    background-image: var(--bg-image-url);
+    background-image: url('../raiane-bg.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    background-color: #1a1a2e; /* fallback */
+    background-attachment: fixed;
+    pointer-events: none;
+}
+
+.page-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.55) 0%,
+        rgba(0, 0, 0, 0.20) 32%,
+        rgba(0, 0, 0, 0.25) 62%,
+        rgba(0, 0, 0, 0.72) 100%
+    );
     pointer-events: none;
 }
 
 /* =========================================
-   CAMADA DE ESCURECIMENTO
+   4. CAMADAS LEGADAS DE VÍDEO — desativadas
    ========================================= */
-.bg-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    width: 100dvw;
-    height: 100vh;
-    height: 100dvh;
-    z-index: 1;
-    pointer-events: none;
-    background: rgba(0, 0, 0, var(--bg-overlay-opacity));
+#video-background-container,
+.video-overlay {
+    display: none !important;
 }
 
 /* =========================================
-   CONTEÚDO PRINCIPAL
+   5. CONTAINER PRINCIPAL  (camada 10)
    ========================================= */
 .main-container {
     position: relative;
     z-index: 10;
     width: 100%;
-    max-width: 100%;
+    max-width: var(--max-width);
     margin: 0 auto;
-    padding: 0 var(--spacing-md);
+    padding: clamp(20px, 5vh, 56px) clamp(16px, 4vw, 24px) clamp(24px, 5vh, 48px);
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: clamp(16px, 3vh, 28px);
     min-height: 100vh;
     min-height: 100dvh;
 }
 
 /* =========================================
-   CABEÇALHO
+   6. TOP BAR — redes sociais no topo
    ========================================= */
-.page-header {
+.top-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(4px, 1vw, 8px);
     width: 100%;
-    max-width: var(--max-width-content);
-    text-align: center;
-    padding: clamp(48px, 8vh, 80px) 0 clamp(24px, 4vh, 40px);
+    padding: 0;
 }
 
-.creator-name {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: clamp(28px, 7vw, 44px);
-    font-weight: 600;
-    color: var(--color-text);
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    margin-bottom: var(--spacing-sm);
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+.top-socials {
+    display: flex;
+    align-items: center;
+    gap: clamp(4px, 1vw, 8px);
 }
 
-.creator-tagline {
-    font-size: clamp(15px, 3.5vw, 20px);
-    font-weight: 400;
-    color: var(--color-text-muted);
-    letter-spacing: 0.01em;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-circle);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.social-link:hover,
+.social-link:focus-visible {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.28);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.social-link svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+/* Oculta o overlay duplicado (legado) */
+.hero-socials-overlay {
+    display: none !important;
 }
 
 /* =========================================
-   CARDS — LISTA VERTICAL (JS injeta aqui)
+   7. HERO — apenas título
+   ========================================= */
+.hero-section {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(6px, 1.2vh, 12px);
+    padding: clamp(6px, 1.5vh, 16px) 0;
+}
+
+.hero-title {
+    font-size: clamp(1.75rem, 5.5vw, 2.35rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #fff;
+    text-shadow:
+        0 2px 22px rgba(0, 0, 0, 0.55),
+        0 1px 3px rgba(0, 0, 0, 0.40);
+}
+
+/* =========================================
+   8. CARDS — Glassmorphism
    ========================================= */
 .cards-section {
     width: 100%;
-    max-width: var(--max-width-content);
-    padding-bottom: clamp(32px, 5vh, 60px);
-}
-
-.cards-list {
     display: flex;
     flex-direction: column;
-    gap: clamp(14px, 2.5vw, 22px);
-    width: 100%;
+    align-items: center;
 }
 
-/* Card gerado pelo JS */
+.cards-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: clamp(9px, 1.4vh, 13px);
+}
+
 .card-item {
+    position: relative;
     display: flex;
     align-items: center;
-    width: 100%;
-    min-height: clamp(72px, 12vw, 96px);
-    padding: clamp(12px, 2vw, 18px) clamp(14px, 2.5vw, 20px);
-    background: var(--card-bg);
-    border: 1.5px solid var(--card-border);
+    justify-content: center;
+    min-height: 66px;
+    padding: 12px 68px;
     border-radius: var(--radius-card);
-    backdrop-filter: blur(var(--card-blur)) saturate(110%);
-    -webkit-backdrop-filter: blur(var(--card-blur)) saturate(110%);
-    box-shadow: var(--card-shadow);
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    text-decoration: none;
-    color: var(--color-text);
-}
 
-/* Esconder imagem original do card (usada como fallback) */
-.card-item img {
-    display: none;
-}
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
 
-/* Adicionar ícone baseado no índice (--card-index adicionado pelo JS) */
-.card-item::before {
-    content: '';
-    flex-shrink: 0;
-    width: clamp(38px, 8vw, 48px);
-    height: clamp(38px, 8vw, 48px);
-    margin-right: clamp(12px, 2.5vw, 18px);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
+    border: 1px solid var(--glass-border);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.10);
 
-/* Ícone Privacy (card index 0) */
-.card-item[style*="--card-index: 0"]::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23E8453C'/%3E%3Cpath d='M24 14C19.5 14 16 17.5 16 22V34H20V22C20 19.8 21.8 18 24 18C26.2 18 28 19.8 28 22V34H32V22C32 17.5 28.5 14 24 14Z' fill='%23FFFFFF'/%3E%3Ccircle cx='24' cy='28' r='2.5' fill='%23E8453C'/%3E%3C/svg%3E");
-}
-
-/* Ícone Telegram VIP (card index 1) */
-.card-item[style*="--card-index: 1"]::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%232AABEE'/%3E%3Cpath d='M10.5 23.5L37 13L30 35L23 27L10.5 23.5Z' fill='%23FFFFFF'/%3E%3Cpath d='M23 27L26 33L28.5 29L23 27Z' fill='%23C8DAEA'/%3E%3Cpath d='M10.5 23.5L20 22L30 16L20 24L10.5 23.5Z' fill='%23FFFFFF'/%3E%3C/svg%3E");
-}
-
-/* Ícone Exclusivos (card index 2) - usando ícone genérico estrela */
-.card-item[style*="--card-index: 2"]::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%239C27B0'/%3E%3Cpath d='M24 12L27.5 19L35 20L29.5 25.5L31 33L24 29L17 33L18.5 25.5L13 20L20.5 19L24 12Z' fill='%23FFFFFF'/%3E%3C/svg%3E");
-}
-
-/* Ícone OnlyFans (card index 3) */
-.card-item[style*="--card-index: 3"]::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%2300AEEF'/%3E%3Cpath d='M24 14C18.5 14 14 18.5 14 24C14 29.5 18.5 34 24 34C29.5 34 34 29.5 34 24' stroke='%23FFFFFF' stroke-width='3.5' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='24' r='4' fill='%23FFFFFF'/%3E%3C/svg%3E");
-}
-
-/* Ícone Fatal Fans (card index 4) */
-.card-item[style*="--card-index: 4"]::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23000000'/%3E%3Cpath d='M14 24C14 24 18 16 24 16C30 16 34 24 34 24C34 24 30 32 24 32C18 32 14 24 14 24Z' stroke='%23FFFFFF' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M20 20C22 22 22 26 20 28' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M28 20C26 22 26 26 28 28' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
-}
-
-/* Ícone Telegram Free (card index 5) */
-.card-item[style*="--card-index: 5"]::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%232AABEE'/%3E%3Cpath d='M10.5 23.5L37 13L30 35L23 27L10.5 23.5Z' fill='%23FFFFFF'/%3E%3Cpath d='M23 27L26 33L28.5 29L23 27Z' fill='%23C8DAEA'/%3E%3Cpath d='M10.5 23.5L20 22L30 16L20 24L10.5 23.5Z' fill='%23FFFFFF'/%3E%3C/svg%3E");
-}
-
-/* Texto do nome do card (usando o alt da imagem via CSS ou adicionando via JS) */
-.card-item::after {
-    content: attr(aria-label);
-    flex: 1;
-    font-size: clamp(14px, 3.2vw, 17px);
-    font-weight: 500;
-    color: var(--color-text);
-    text-align: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: clamp(0.94rem, 2.6vw, 1.02rem);
     letter-spacing: 0.01em;
-    line-height: 1.3;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Hover (desktop) */
-@media (hover: hover) {
-    .card-item:hover {
-        background: var(--card-bg-hover);
-        border-color: var(--card-border-hover);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
-    }
-
-    .card-item:focus-visible {
-        outline: 2px solid rgba(255, 255, 255, 0.6);
-        outline-offset: 3px;
-    }
-}
-
-/* Active (mobile) */
-@media (hover: none) {
-    .card-item:active {
-        background: rgba(255, 255, 255, 0.18);
-        transform: scale(0.98);
-    }
-}
-
-/* Animação de pulse (preservada do JS) */
-.card-pulse {
-    animation: cardPulse 0.4s ease;
-}
-
-@keyframes cardPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(0.96); }
-    100% { transform: scale(1); }
-}
-
-/* =========================================
-   MENSAGEM NOSRIPT (preservada)
-   ========================================= */
-.noscript-message {
     text-align: center;
-    padding: var(--spacing-lg);
-    color: var(--color-text-muted);
-    font-size: 14px;
+    text-decoration: none;
+
+    cursor: pointer;
+    overflow: hidden;
+    isolation: isolate;
+
+    transition:
+        background 0.22s ease,
+        border-color 0.22s ease,
+        transform 0.22s ease,
+        box-shadow 0.25s ease;
+}
+
+.card-item:hover,
+.card-item:focus-visible {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-strong);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.35),
+        0 0 24px rgba(255, 255, 255, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.card-item:active {
+    transform: translateY(0);
+}
+
+.card-label {
+    display: block;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
+}
+
+.card-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-circle);
+    display: grid;
+    place-items: center;
+    color: #fff;
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.20);
+    z-index: 2;
+}
+
+.card-icon svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+.card-icon--privacy    { background: var(--brand-privacy); }
+.card-icon--telegram   { background: var(--brand-telegram); }
+.card-icon--onlyfans   { background: var(--brand-onlyfans); }
+.card-icon--fatalfans  { background: var(--brand-fatalfans); border: 1px solid rgba(255, 255, 255, 0.14); }
+.card-icon--exclusivos { background: var(--brand-exclusivos); }
+
+/* =========================================
+   9. FOOTER
+   ========================================= */
+.site-footer {
+    margin-top: auto;
+    text-align: center;
+    padding: var(--sp-md) 0 var(--sp-sm);
+    color: var(--color-text-soft);
+}
+
+.footer-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-sm);
+    margin-bottom: var(--sp-xs);
+    font-size: 1.1rem;
+    opacity: 0.7;
+}
+
+.footer-divider::before,
+.footer-divider::after {
+    content: '';
+    height: 1px;
+    width: 52px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+}
+
+.footer-text {
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
 }
 
 /* =========================================
-   MODAL +18 (preservado e ajustado)
+   10. MODAL +18  (camada 9999)
    ========================================= */
 .modal-overlay {
     position: fixed;
     inset: 0;
     z-index: 9999;
+
     display: grid;
     place-items: center;
+
     padding:
-        max(var(--spacing-md), env(safe-area-inset-top))
-        max(var(--spacing-md), env(safe-area-inset-right))
-        max(var(--spacing-md), env(safe-area-inset-bottom))
-        max(var(--spacing-md), env(safe-area-inset-left));
-    background: var(--color-overlay);
-    -webkit-backdrop-filter: blur(12px) saturate(120%);
-    backdrop-filter: blur(12px) saturate(120%);
+        max(var(--sp-md), env(safe-area-inset-top))
+        max(var(--sp-md), env(safe-area-inset-right))
+        max(var(--sp-md), env(safe-area-inset-bottom))
+        max(var(--sp-md), env(safe-area-inset-left));
+
+    background: rgba(0, 0, 0, 0.72);
+
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    backdrop-filter: blur(14px) saturate(120%);
+
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+
     overscroll-behavior: contain;
     isolation: isolate;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .modal-overlay.active {
@@ -355,22 +408,24 @@ body.modal-active {
     max-height: min(90vh, 90dvh);
     overflow-y: auto;
     overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(180, 180, 180, 0.5) transparent;
     padding: 48px 24px 28px;
+
     background:
-        radial-gradient(120% 70% at 50% 0%,
-            rgba(229, 9, 20, 0.10) 0%,
-            transparent 55%),
-        linear-gradient(145deg, #0f1015 0%, #07080b 100%);
-    border: 1px solid rgba(180, 180, 180, 0.35);
-    border-radius: var(--radius-xl);
+        radial-gradient(120% 70% at 50% 0%, rgba(232, 53, 60, 0.12) 0%, transparent 55%),
+        linear-gradient(145deg, #121319 0%, #08090d 100%);
+
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+
     box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.85),
-        0 0 40px rgba(180, 180, 180, 0.08),
+        0 0 40px rgba(255, 255, 255, 0.06),
         inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
     text-align: center;
     isolation: isolate;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(180, 180, 180, 0.5) transparent;
 }
 
 .modal-container::-webkit-scrollbar { width: 6px; }
@@ -394,7 +449,7 @@ body.modal-active {
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(180, 180, 180, 0.35);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-circle);
     color: #fff;
     cursor: pointer;
@@ -404,9 +459,8 @@ body.modal-active {
 
 .modal-close-btn:hover,
 .modal-close-btn:focus-visible {
-    background: rgba(229, 9, 20, 0.20);
-    border-color: rgba(220, 220, 220, 0.6);
-    color: #fff;
+    background: rgba(232, 53, 60, 0.22);
+    border-color: var(--glass-border-strong);
     outline: none;
 }
 
@@ -434,7 +488,7 @@ body.modal-active {
     align-items: center;
     justify-content: center;
     background: #050505;
-    border: 1px solid rgba(180, 180, 180, 0.35);
+    border: 1px solid var(--glass-border);
     font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
     font-size: 36px;
     font-weight: 700;
@@ -512,7 +566,7 @@ body.modal-active {
 .modal-btn-primary:hover,
 .modal-btn-primary:focus-visible {
     filter: brightness(1.12);
-    border-color: rgba(220, 220, 220, 0.6);
+    border-color: var(--glass-border-strong);
     box-shadow:
         0 6px 26px rgba(230, 0, 0, 0.6),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -526,21 +580,21 @@ body.modal-active {
     font-size: 14px;
     margin-top: 6px;
     padding: 12px;
-    border: 1px solid rgba(180, 180, 180, 0.35);
+    border: 1px solid var(--glass-border);
 }
 
 .modal-btn-secondary:hover,
 .modal-btn-secondary:focus-visible {
     color: #fff;
     background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(220, 220, 220, 0.6);
+    border-color: var(--glass-border-strong);
     outline: none;
 }
 
 .modal-footer-note {
     margin-top: 22px;
     padding-top: 18px;
-    border-top: 1px solid rgba(180, 180, 180, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -564,159 +618,52 @@ body.modal-active {
 }
 
 /* =========================================
-   RESPONSIVO — MOBILE (até 639px)
+   11. RESPONSIVO
    ========================================= */
-@media (max-width: 639px) {
+@media (max-width: 380px) {
+    .card-item {
+        padding: 10px 60px;
+        min-height: 60px;
+    }
+    .card-icon {
+        width: 38px;
+        height: 38px;
+        left: 10px;
+    }
+    .card-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+    .social-link {
+        width: 30px;
+        height: 30px;
+    }
+    .social-link svg {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+@media (min-width: 700px) {
     .main-container {
-        padding: 0 var(--spacing-sm);
+        padding-top: clamp(32px, 6vh, 72px);
+        padding-bottom: clamp(32px, 6vh, 72px);
     }
-
-    .page-header {
-        padding: clamp(40px, 7vh, 64px) 0 clamp(20px, 3.5vh, 32px);
-    }
-
-    .cards-section {
-        padding-bottom: clamp(28px, 4vh, 48px);
-    }
-
-    .cards-list {
-        gap: clamp(12px, 2.2vw, 18px);
-    }
-
     .card-item {
-        min-height: clamp(66px, 14vw, 84px);
-        padding: clamp(10px, 2.5vw, 16px) clamp(12px, 3vw, 18px);
-        border-radius: 22px;
-    }
-
-    .card-item::before {
-        width: clamp(34px, 9vw, 42px);
-        height: clamp(34px, 9vw, 42px);
-        margin-right: clamp(10px, 2.5vw, 14px);
+        min-height: 72px;
     }
 }
 
-/* =========================================
-   RESPONSIVO — TABLET (640px – 999px)
-   ========================================= */
-@media (min-width: 640px) and (max-width: 999px) {
-    .main-container {
-        padding: 0 var(--spacing-md);
-    }
-
-    .page-header {
-        padding: clamp(56px, 8vh, 80px) 0 clamp(24px, 4vh, 40px);
-    }
-
-    .cards-list {
-        gap: clamp(16px, 2.5vw, 22px);
-    }
-
-    .card-item {
-        min-height: clamp(76px, 10vw, 92px);
-    }
-}
-
-/* =========================================
-   RESPONSIVO — DESKTOP (1000px+)
-   ========================================= */
-@media (min-width: 1000px) {
-    body {
-        overflow: auto;
-    }
-
-    .main-container {
-        padding: 0 var(--spacing-lg);
-    }
-
-    .page-header {
-        padding: clamp(64px, 9vh, 96px) 0 clamp(28px, 4vh, 44px);
-    }
-
-    .cards-section {
-        max-width: 560px;
-    }
-
-    .cards-list {
-        gap: clamp(16px, 1.4vw, 22px);
-    }
-
-    .card-item {
-        min-height: 88px;
-        padding: 16px 22px;
-    }
-
-    .card-item::before {
-        width: 46px;
-        height: 46px;
-        margin-right: 18px;
-    }
-
-    .card-item::after {
-        font-size: 16px;
-    }
-}
-
-/* =========================================
-   TELAS MUITO ALTAS (≥ 900px de altura)
-   ========================================= */
-@media (min-height: 900px) {
-    .page-header {
-        padding-top: clamp(72px, 10vh, 100px);
-    }
-}
-
-/* =========================================
-   TELAS BAIXAS E LARGAS (landscape mobile)
-   ========================================= */
-@media (max-height: 500px) and (orientation: landscape) {
-    .page-header {
-        padding: clamp(20px, 4vh, 32px) 0 clamp(12px, 2vh, 20px);
-    }
-
-    .creator-name {
-        font-size: clamp(22px, 5vw, 32px);
-    }
-
-    .creator-tagline {
-        font-size: clamp(13px, 2.8vw, 16px);
-    }
-
-    .cards-list {
-        gap: clamp(8px, 1.5vw, 14px);
-    }
-
-    .card-item {
-        min-height: clamp(52px, 10vh, 68px);
-        padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 16px);
-        border-radius: 18px;
-    }
-
-    .card-item::before {
-        width: clamp(30px, 6vw, 38px);
-        height: clamp(30px, 6vw, 38px);
-        margin-right: clamp(8px, 1.5vw, 12px);
-    }
-
-    .card-item::after {
-        font-size: clamp(12px, 2.5vw, 15px);
-    }
-}
-
-/* =========================================
-   MODAL RESPONSIVO
-   ========================================= */
+/* Modal — telas pequenas */
 @media (max-width: 480px) {
     .modal-overlay {
-        padding: var(--spacing-sm);
+        padding: var(--sp-sm);
     }
-
     .modal-container {
         max-width: 100%;
         max-height: min(88vh, 88dvh);
         padding: 44px 18px 24px;
     }
-
     .modal-subtitle {
         font-size: 20px;
     }
@@ -726,74 +673,51 @@ body.modal-active {
     .modal-container {
         padding: 40px 14px 20px;
     }
-
     #modal-title {
         width: 74px;
         height: 74px;
         font-size: 28px;
     }
-
     #modal-title::before {
         top: -22px;
         width: 28px;
         height: 18px;
     }
-
     .modal-subtitle {
         font-size: 17px;
     }
-
     .modal-description {
         font-size: 13px;
     }
 }
 
 /* =========================================
-   ACESSIBILIDADE
+   12. ACESSIBILIDADE
    ========================================= */
 :focus-visible {
-    outline: 2px solid var(--color-text);
-    outline-offset: 4px;
+    outline: 2px solid #fff;
+    outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
+        animation-duration: 0.001ms !important;
         animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-
-    .modal-overlay {
-        transition: none;
-    }
-    
-    .card-pulse {
-        animation: none;
+        transition-duration: 0.001ms !important;
     }
 }
 
 @media (prefers-reduced-transparency: reduce) {
+    .card-item {
+        background: rgba(0, 0, 0, 0.55);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
     .modal-overlay {
         -webkit-backdrop-filter: none;
         backdrop-filter: none;
         background: rgba(0, 0, 0, 0.95);
-    }
-
-    .card-item {
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        background: rgba(30, 30, 30, 0.90);
-    }
-}
-
-/* =========================================
-   FORÇA FUNDO PRETO SE IMAGEM FALHAR
-   ========================================= */
-@media (max-width: 999px) {
-    html,
-    body {
-        background-color: #000000;
     }
 }
