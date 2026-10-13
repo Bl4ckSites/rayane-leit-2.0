@@ -1,8 +1,9 @@
 /* ==========================================================================
    RAIANE LEIT — main.js
-   Cards: glass + SVG + texto (sem imagens .webp)
+   Cards em glassmorphism: imagem (pasta /icons) OU SVG inline (Telegram).
    ========================================================================== */
 'use strict';
+
 
 /* =============================================================
    CONFIG
@@ -19,41 +20,48 @@ const CONFIG = {
         {
             id: 'privacy',
             name: 'Privacy',
+            iconSrc: 'icons/privacy.png',
             url: 'https://privacy.com.br/checkout/Rayanne_leite',
             requiresAgeCheck: true
         },
         {
             id: 'vip',
             name: 'Telegram VIP',
+            svg: 'telegram',
             urlChunks: ['nN==', 'YmcmpUE0', 'Y2IgYaDi', 'nJIZnJSF', 'qT9vK2I0'],
             requiresAgeCheck: true
         },
         {
             id: 'exclusivos',
             name: 'Exclusivos',
+            iconSrc: 'icons/exclusivos.png',
             urlChunks: ['qTt=', 'Yl86p3O0', 'paOeozyf', 'pUOuYaMc', 'ozScLKVi', 'MKEcMJky'],
             requiresAgeCheck: true
         },
         {
             id: 'onlyfans',
             name: 'OnlyFans',
+            iconSrc: 'icons/onlyfans.png',
             urlChunks: ['qTt=', 'Yl86p3O0', 'LJM5oT5i', 'oJ9wYaAh', 'ozS5LKVi', 'qTyyoP5y'],
             requiresAgeCheck: true
         },
         {
             id: 'fatalfans',
             name: 'Fatal Fans',
+            iconSrc: 'icons/fatalfans.png',
             urlChunks: ['pUE0nN==', 'LJLiYmcm', 'ozSzoTS0', 'Y21iLl5m', 'MJ5unJSl', 'MKEcMJks'],
             requiresAgeCheck: true
         },
         {
             id: 'free',
             name: 'Telegram Free',
+            svg: 'telegram',
             urlChunks: ['nN==', 'YmcmpUE0', 'Y2IgYaDi', 'MJ5urJSF', 'MKEcMJks'],
             requiresAgeCheck: true
         }
     ],
-    // Vídeo de fundo desativado: usamos raiane-bg.jpg em .page-bg.
+    // Vídeo de fundo desativado: usamos raiane-bg.jpg via .page-bg.
+    // breakpoint inalcançável → initDesktopVideo() nunca cria <video>.
     video: { src: 'imgs/desktop-background.mp4', breakpoint: 99999 }
 };
 
@@ -63,49 +71,20 @@ const TIMINGS = {
     RIPPLE_MS:   600
 };
 
+
 /* =============================================================
-   ÍCONES SVG — embutidos por id de card
+   ÍCONES SVG — apenas os que substituem imagens
 ============================================================= */
 const ICONS = {
-    privacy:
-        '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
-            '<path d="M8 21V4h6a5 5 0 0 1 0 10H8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>' +
-            '<circle cx="18" cy="19" r="1.6" fill="currentColor"/>' +
-        '</svg>',
-
     telegram:
-        '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">' +
-            '<path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>' +
-        '</svg>',
-
-    exclusivos:
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
-            '<rect x="3" y="8" width="18" height="4" rx="1.2"/>' +
-            '<path d="M5 12v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8"/>' +
-            '<path d="M12 8v13"/>' +
-            '<path d="M12 8s-2.2-5-4.2-5S5.2 5 6.4 6.6 12 8 12 8z"/>' +
-            '<path d="M12 8s2.2-5 4.2-5 2.6 2 1.4 3.6S12 8 12 8z"/>' +
-        '</svg>',
-
-    onlyfans:
-        '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">' +
-            '<path d="M24 4.003h-4.015c-3.45 0-5.3.197-7.127 1.173a12.46 12.46 0 0 0-4.79 4.79c-.98 1.83-1.178 3.68-1.178 7.13v2.66H3.62a5.53 5.53 0 0 1-1.883-.271 5.51 5.51 0 0 1-1.525-1.153 5.52 5.52 0 0 1-1.156-1.523A5.53 5.53 0 0 1 0 5.53v-.007a5.53 5.53 0 0 1 .271-1.883A5.51 5.51 0 0 1 1.424 2.115 5.52 5.52 0 0 1 2.947.959A5.53 5.53 0 0 1 4.83 0h14.174v4.003z"/>' +
-            '<path d="M20.314 8.66c-1.22 0-2.243.44-3.07 1.32-.83.88-1.24 2.02-1.24 3.43v2.09H9.68v-4.94c0-1.44-.15-2.62-.44-3.53h4.99c.42 0 .83.03 1.22.1v6.3h4.87v-4.77z"/>' +
-        '</svg>',
-
-    fatalfans:
-        '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">' +
-            '<path d="M11.9 6.6 6.6 1.9C5.4.8 3.4 1.5 3.4 3.2v17.6c0 1.7 2 2.4 3.2 1.3l5.3-4.7 5.3 4.7c1.2 1.1 3.2.4 3.2-1.3V3.2c0-1.7-2-2.4-3.2-1.3l-5.3 4.7z"/>' +
-        '</svg>',
-
-    free:
         '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">' +
             '<path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>' +
         '</svg>'
 };
 
+
 /* =============================================================
-   GA4
+   GA4 — rastreamento de cliques nos cards
 ============================================================= */
 function trackCardClick(cardName, cardId, destinationUrl) {
     if (typeof window.gtag !== 'function') return;
@@ -119,8 +98,9 @@ function trackCardClick(cardName, cardId, destinationUrl) {
     });
 }
 
+
 /* =============================================================
-   RESOLVE URL
+   RESOLVE URL — url direta OU chunks decodificados
 ============================================================= */
 function decodeUrl(chunks) {
     try {
@@ -145,8 +125,9 @@ function resolveCardUrl(card) {
     return '#';
 }
 
+
 /* =============================================================
-   ÁUDIO
+   ÁUDIO — clique sintético
 ============================================================= */
 let audioCtx = null;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -182,6 +163,7 @@ function playClickSound() {
     osc.stop(now + 0.1);
 }
 
+
 /* =============================================================
    RIPPLE
 ============================================================= */
@@ -207,8 +189,9 @@ function createRipple(event, element) {
     ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
 }
 
+
 /* =============================================================
-   TAP HELPER
+   TAP HELPER — clique/tap unificado com proteção
 ============================================================= */
 const TAP_MAX_DISTANCE = 10;
 const TAP_MAX_DURATION = 500;
@@ -258,6 +241,7 @@ function attachTapHandler(element, handler) {
     });
 }
 
+
 /* =============================================================
    INIT
 ============================================================= */
@@ -268,6 +252,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initDesktopVideo();
 });
 
+
+/* =============================================================
+   SOCIAL LINKS
+============================================================= */
 function initSocialLinks() {
     document.querySelectorAll('.social-link[data-social]').forEach(link => {
         const platform = link.getAttribute('data-social');
@@ -275,8 +263,9 @@ function initSocialLinks() {
     });
 }
 
+
 /* =============================================================
-   RENDER CARDS — glass + SVG + texto
+   RENDER CARDS — imagem OU svg + rótulo
 ============================================================= */
 function renderCards() {
     const container = document.getElementById('cards-container');
@@ -286,16 +275,29 @@ function renderCards() {
         const cardElement = document.createElement('a');
         cardElement.className = 'card-item';
 
+        // SEGURANÇA: href é sempre '#'. A URL real só é resolvida no clique.
         cardElement.href = '#';
         cardElement.setAttribute('role', 'button');
         cardElement.setAttribute('aria-label', `Acessar ${card.name}`);
         cardElement.style.setProperty('--card-index', index);
 
+        // --- Ícone: imagem (padrão) ou SVG (quando card.svg existe) ---
         const iconWrap = document.createElement('span');
         iconWrap.className = `card-icon card-icon--${card.id}`;
         iconWrap.setAttribute('aria-hidden', 'true');
-        iconWrap.innerHTML = ICONS[card.id] || '';
 
+        if (card.svg && ICONS[card.svg]) {
+            iconWrap.innerHTML = ICONS[card.svg];
+        } else if (card.iconSrc) {
+            const img = document.createElement('img');
+            img.src = card.iconSrc;
+            img.alt = '';
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            iconWrap.appendChild(img);
+        }
+
+        // --- Rótulo (nome do card, preservado do CONFIG) ---
         const label = document.createElement('span');
         label.className = 'card-label';
         label.textContent = card.name;
@@ -303,7 +305,9 @@ function renderCards() {
         cardElement.appendChild(iconWrap);
         cardElement.appendChild(label);
 
-        attachTapHandler(cardElement, () => {
+        // --- Handler único de clique/tap com ripple ---
+        attachTapHandler(cardElement, (event) => {
+            createRipple(event, cardElement);
             const realUrl = resolveCardUrl(card);
             handleCardClick(realUrl, card, cardElement);
         });
@@ -312,6 +316,10 @@ function renderCards() {
     });
 }
 
+
+/* =============================================================
+   CLIQUE NO CARD
+============================================================= */
 function handleCardClick(url, card, cardElement) {
     if (cardElement && !prefersReducedMotion.matches) {
         cardElement.classList.add('card-pulse');
@@ -322,6 +330,7 @@ function handleCardClick(url, card, cardElement) {
 
     if (url === '#' || !url) return;
 
+    // === RASTREAMENTO GA4 ===
     trackCardClick(card.name, card.id, url);
 
     if (card.requiresAgeCheck && typeof window.triggerAgeModal === 'function') {
@@ -330,6 +339,7 @@ function handleCardClick(url, card, cardElement) {
         window.location.href = url;
     }
 }
+
 
 /* =============================================================
    MODAL +18
@@ -433,8 +443,10 @@ function initModal() {
     };
 }
 
+
 /* =============================================================
    VÍDEO DE FUNDO — mantido por compatibilidade, inativo
+   (breakpoint 99999 impede a criação; CSS também oculta as camadas)
 ============================================================= */
 function initDesktopVideo() {
     const container = document.getElementById('video-background-container');
