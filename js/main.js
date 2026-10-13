@@ -1,6 +1,6 @@
 /* ==========================================================================
    RAIANE LEIT — main.js
-   Cards em glassmorphism: imagem (pasta /icons) OU SVG inline (Telegram).
+   Cards em vidro escuro: imagem (pasta /icons) OU SVG inline (Telegram).
    ========================================================================== */
 'use strict';
 
@@ -59,10 +59,7 @@ const CONFIG = {
             urlChunks: ['nN==', 'YmcmpUE0', 'Y2IgYaDi', 'MJ5urJSF', 'MKEcMJks'],
             requiresAgeCheck: true
         }
-    ],
-    // Vídeo de fundo desativado: usamos raiane-bg.jpg via .page-bg.
-    // breakpoint inalcançável → initDesktopVideo() nunca cria <video>.
-    video: { src: 'imgs/desktop-background.mp4', breakpoint: 99999 }
+    ]
 };
 
 const TIMINGS = {
@@ -73,7 +70,7 @@ const TIMINGS = {
 
 
 /* =============================================================
-   ÍCONES SVG — apenas os que substituem imagens
+   ÍCONES SVG — apenas Telegram (os demais vêm de /icons/*.png)
 ============================================================= */
 const ICONS = {
     telegram:
@@ -249,7 +246,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initSocialLinks();
     renderCards();
     initModal();
-    initDesktopVideo();
 });
 
 
@@ -441,106 +437,4 @@ function initModal() {
         selectedDestination = url;
         openModal();
     };
-}
-
-
-/* =============================================================
-   VÍDEO DE FUNDO — mantido por compatibilidade, inativo
-   (breakpoint 99999 impede a criação; CSS também oculta as camadas)
-============================================================= */
-function initDesktopVideo() {
-    const container = document.getElementById('video-background-container');
-    const overlay   = document.querySelector('.video-overlay');
-    if (!container || !overlay) return;
-
-    let currentVideo = null;
-
-    function tryPlay(video) {
-        const p = video.play();
-        if (p && typeof p.catch === 'function') {
-            p.catch((err) => {
-                console.warn('[video] Autoplay bloqueado:', err && err.name);
-                const resume = () => {
-                    video.play().catch(() => {});
-                    document.removeEventListener('click', resume);
-                    document.removeEventListener('touchstart', resume);
-                    document.removeEventListener('keydown', resume);
-                };
-                document.addEventListener('click', resume, { once: true });
-                document.addEventListener('touchstart', resume, { once: true });
-                document.addEventListener('keydown', resume, { once: true });
-            });
-        }
-    }
-
-    function createVideo() {
-        const video = document.createElement('video');
-        video.src = CONFIG.video.src;
-        video.autoplay = true;
-        video.muted = true;
-        video.loop = true;
-        video.playsInline = true;
-        video.preload = 'auto';
-        video.setAttribute('muted', '');
-        video.setAttribute('autoplay', '');
-        video.setAttribute('playsinline', '');
-        video.setAttribute('webkit-playsinline', '');
-        video.setAttribute('aria-hidden', 'true');
-        video.setAttribute('disablepictureinpicture', '');
-        video.setAttribute('tabindex', '-1');
-
-        video.addEventListener('error', () => {
-            console.error('[video] FALHA ao carregar:', CONFIG.video.src);
-            container.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-
-        video.addEventListener('loadeddata', () => { tryPlay(video); }, { once: true });
-
-        container.appendChild(video);
-        container.classList.add('active');
-        overlay.classList.add('active');
-
-        tryPlay(video);
-        currentVideo = video;
-    }
-
-    function destroyVideo() {
-        if (!currentVideo) return;
-        try { currentVideo.pause(); } catch (_) {}
-        currentVideo.removeAttribute('src');
-        try { currentVideo.load(); } catch (_) {}
-        container.innerHTML = '';
-        container.classList.remove('active');
-        overlay.classList.remove('active');
-        currentVideo = null;
-    }
-
-    const checkDesktop = () => {
-        const isDesktop = window.matchMedia(`(min-width: ${CONFIG.video.breakpoint}px)`).matches;
-        const hasVideo  = !!container.querySelector('video');
-
-        if (isDesktop && !hasVideo) {
-            createVideo();
-        } else if (!isDesktop && hasVideo) {
-            destroyVideo();
-        }
-    };
-
-    checkDesktop();
-
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(checkDesktop, 200);
-    });
-
-    document.addEventListener('visibilitychange', () => {
-        if (!currentVideo) return;
-        if (document.hidden) {
-            try { currentVideo.pause(); } catch (_) {}
-        } else {
-            tryPlay(currentVideo);
-        }
-    });
 }
