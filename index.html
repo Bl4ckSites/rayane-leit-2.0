@@ -5,32 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <!-- ==========================================================
-         SEGURANÇA — Bloqueio de IA + Rotulagem de conteúdo adulto
-    =========================================================== -->
     <meta name="robots" content="index, follow, noai, noimageai">
     <meta name="rating" content="adult">
     <meta name="rating" content="RTA-5042-1996-1400-1577-RTA">
     <meta name="content-rating" content="adult">
 
-    <!-- ==========================================================
-         SEO / TÍTULO
-    =========================================================== -->
     <title>Raiane Leit | Links Oficiais</title>
     <meta name="description" content="Acesse meus canais exclusivos e oficiais. Conteúdo premium e atualizações diárias.">
     <link rel="canonical" href="https://raianeleite.com/">
 
-
-    <!-- ==========================================================
-         TEMA / APARÊNCIA
-    =========================================================== -->
     <meta name="theme-color" content="#000000">
     <meta name="color-scheme" content="dark">
     <meta name="format-detection" content="telephone=no">
 
-    <!-- ==========================================================
-         OPEN GRAPH
-    =========================================================== -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Raiane Leit | Links Oficiais">
     <meta property="og:description" content="Acesse os canais exclusivos e oficiais de Raiane Leit.">
@@ -41,62 +28,38 @@
     <meta property="og:locale" content="pt_BR">
     <meta property="og:site_name" content="Raiane Leit">
 
-    <!-- ==========================================================
-         TWITTER CARD
-    =========================================================== -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Raiane Leit | Links Oficiais">
     <meta name="twitter:description" content="Acesse meus canais exclusivos.">
     <meta name="twitter:image" content="https://raianeleite.com/thumbnail.webp">
 
-    <!-- ==========================================================
-         SITEMAP — Ajuda o Google a descobrir
-    =========================================================== -->
     <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 
-    <!-- ==========================================================
-         SEGURANÇA / PRIVACIDADE
-    =========================================================== -->
     <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
-    <!-- ==========================================================
-         FAVICON — SVG inline (sem arquivo externo)
-    =========================================================== -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23000'/%3E%3Ccircle cx='16' cy='16' r='14.5' fill='none' stroke='%23E50914' stroke-width='0.6' opacity='0.55'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='17' font-weight='700' fill='%23fff' text-anchor='middle' letter-spacing='-1'%3ERL%3C/text%3E%3C/svg%3E">
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23000'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='17' font-weight='700' fill='%23fff' text-anchor='middle' letter-spacing='-1'%3ERL%3C/text%3E%3C/svg%3E">
 
-    <!-- ==========================================================
-         PRELOAD — imagem de fundo (melhora LCP)
-    =========================================================== -->
     <link rel="preload" as="image" href="raiane-bg.jpg" fetchpriority="high">
 
-    <!-- ==========================================================
-         ESTILOS (ordem importa: animation sobrescreve style)
-    =========================================================== -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animation.css">
 
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VCGCEF7ZFN"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-VCGCEF7ZFN');
     </script>
 </head>
 <body>
 
-    <!-- ==========================================================
-         FUNDO FULL-SCREEN (imagem raiane-bg.jpg + overlay)
-    =========================================================== -->
+    <!-- FUNDO FULL-SCREEN -->
     <div class="page-bg" aria-hidden="true"></div>
 
-    <!-- ==========================================================
-         SPRITE SVG (ícones reutilizáveis)
-    =========================================================== -->
+    <!-- SPRITE SVG -->
     <svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"
          style="position:absolute; width:0; height:0; overflow:hidden;">
         <symbol id="icon-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -122,23 +85,18 @@
         </symbol>
     </svg>
 
-    <!-- ==========================================================
-         CAMADAS LEGADAS DE VÍDEO (mantidas para compatibilidade JS,
-         mas ocultas via CSS — usamos raiane-bg.jpg como fundo)
-    =========================================================== -->
+    <!-- Camadas legadas de vídeo (ocultas via CSS) -->
     <div id="video-background-container" aria-hidden="true"></div>
     <div class="video-overlay" aria-hidden="true"></div>
 
-    <!-- ==========================================================
-         CONTEÚDO PRINCIPAL
-    =========================================================== -->
+    <!-- CONTEÚDO PRINCIPAL -->
     <main class="main-container">
 
-        <!-- ==========================================================
-             TOP BAR — somente redes sociais
-        =========================================================== -->
-        <header class="top-bar animate-on-load" style="animation-delay: 0ms;" data-delay="0">
-            <nav class="top-socials" aria-label="Redes sociais do topo">
+        <!-- HERO: título + redes sociais -->
+        <section class="hero-section animate-on-load" style="animation-delay: 0ms;" data-delay="0">
+            <h1 class="hero-title">Raiane Leit</h1>
+
+            <nav class="top-socials" aria-label="Redes sociais">
                 <a href="#" class="social-link" data-social="instagram" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-instagram"></use></svg>
                 </a>
@@ -155,55 +113,16 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-tiktok"></use></svg>
                 </a>
             </nav>
-        </header>
-
-        <!-- ==========================================================
-             HERO — apenas o nome (banner anulado)
-        =========================================================== -->
-        <section class="hero-section animate-on-load" style="animation-delay: 200ms;" data-delay="200">
-            <h1 class="hero-title">Raiane Leit</h1>
-
-            <div class="hero-socials-overlay" aria-label="Redes sociais no cabeçalho">
-                <a href="#" class="social-link" data-social="instagram" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-instagram"></use></svg>
-                </a>
-                <a href="#" class="social-link" data-social="telegram" aria-label="Telegram" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-telegram"></use></svg>
-                </a>
-                <a href="#" class="social-link" data-social="x" aria-label="X (Twitter)" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-x"></use></svg>
-                </a>
-                <a href="#" class="social-link" data-social="facebook" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-facebook"></use></svg>
-                </a>
-                <a href="#" class="social-link" data-social="tiktok" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-tiktok"></use></svg>
-                </a>
-            </div>
         </section>
 
-        <!-- ==========================================================
-             CARDS
-        =========================================================== -->
+        <!-- CARDS -->
         <section class="cards-section" aria-label="Links de acesso">
             <div class="cards-grid" id="cards-container"></div>
         </section>
 
-        <!-- ==========================================================
-             RODAPÉ
-        =========================================================== -->
-        <footer class="site-footer animate-on-load" style="animation-delay: 800ms;" data-delay="800">
-            <div class="footer-divider" aria-hidden="true">
-                <span>✦</span>
-            </div>
-            <p class="footer-text">AQUI É SÓ O COMEÇO...</p>
-        </footer>
-
     </main>
 
-    <!-- ==========================================================
-         MODAL +18
-    =========================================================== -->
+    <!-- MODAL +18 -->
     <div id="age-modal" class="modal-overlay" role="dialog" aria-modal="true"
          aria-labelledby="modal-title" aria-describedby="modal-desc" hidden>
         <div class="modal-container" role="document">
