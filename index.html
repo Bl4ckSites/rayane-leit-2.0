@@ -43,7 +43,6 @@
 
     <link rel="preload" as="image" href="raiane-bg.jpg" fetchpriority="high">
 
-    <!-- Estilos: style.css primeiro, animation.css sobrescreve (comportamento desejado) -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animation.css">
 
@@ -57,8 +56,10 @@
 </head>
 <body>
 
+    <!-- FUNDO FULL-SCREEN -->
     <div class="page-bg" aria-hidden="true"></div>
 
+    <!-- SPRITE SVG (ícones das redes sociais + close do modal) -->
     <svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"
          style="position:absolute; width:0; height:0; overflow:hidden;">
         <symbol id="icon-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -84,12 +85,11 @@
         </symbol>
     </svg>
 
-    <div id="video-background-container" aria-hidden="true"></div>
-    <div class="video-overlay" aria-hidden="true"></div>
-
+    <!-- CONTEÚDO PRINCIPAL -->
     <main class="main-container">
 
-        <section class="hero-section animate-on-load" style="animation-delay: 0ms;" data-delay="0">
+        <!-- HERO: título + redes sociais -->
+        <section class="hero-section">
             <h1 class="hero-title">Raiane Leit</h1>
 
             <nav class="top-socials" aria-label="Redes sociais">
@@ -111,12 +111,14 @@
             </nav>
         </section>
 
+        <!-- CARDS -->
         <section class="cards-section" aria-label="Links de acesso">
             <div class="cards-grid" id="cards-container"></div>
         </section>
 
     </main>
 
+    <!-- MODAL +18 -->
     <div id="age-modal" class="modal-overlay" role="dialog" aria-modal="true"
          aria-labelledby="modal-title" aria-describedby="modal-desc" hidden>
         <div class="modal-container" role="document">
