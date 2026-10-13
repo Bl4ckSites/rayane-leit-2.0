@@ -42,6 +42,7 @@
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23000'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='17' font-weight='700' fill='%23fff' text-anchor='middle' letter-spacing='-1'%3ERL%3C/text%3E%3C/svg%3E">
 
     <link rel="preload" as="image" href="raiane-bg.jpg" fetchpriority="high">
+    <link rel="preload" as="image" href="icons/logo.png">
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animation.css">
@@ -88,9 +89,17 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="main-container">
 
-        <!-- HERO: título + redes sociais -->
+        <!-- HERO: título + ícone + legenda + redes sociais -->
         <section class="hero-section">
-            <h1 class="hero-title">Raiane Leit</h1>
+
+            <div class="hero-intro">
+                <div class="hero-title-row">
+                    <h1 class="hero-title">Raiane Leite</h1>
+                    <img src="icons/logo.png" alt="" class="hero-title-icon" aria-hidden="true" decoding="async">
+                </div>
+
+                <p class="hero-subtitle">Todo meu conteúdos no link abaixo 👇🏼 🥰</p>
+            </div>
 
             <nav class="top-socials" aria-label="Redes sociais">
                 <a href="#" class="social-link" data-social="instagram" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
