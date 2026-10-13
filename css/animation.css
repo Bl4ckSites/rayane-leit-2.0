@@ -1,6 +1,10 @@
 /* ==========================================================================
-   RAÍ MORAES — animation.css
+   RAIANE LEIT — animation.css
+   Todas as animações do site: entrada, hover, press, click e ambiente.
+   --------------------------------------------------------------------------
+   Ordem de carregamento: style.css → animation.css (este sobrescreve).
    ========================================================================== */
+
 
 /* =========================================
    0. VARIÁVEIS DE ANIMAÇÃO
@@ -12,50 +16,320 @@
     --anim-slower:  400ms;
     --anim-card-in: 600ms;
     --anim-modal:   250ms;
-    --anim-ripple:  600ms;
+    --anim-ripple:  650ms;
     --anim-load:    800ms;
 
     --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
 
-    --press-scale:     0.96;
-    --press-scale-soft: 0.98;
-    --hover-scale:     1.04;
-    --card-hover-scale: 1.02;
+    --press-scale:       0.96;
+    --press-scale-soft:  0.98;
+    --hover-scale:       1.06;
+    --card-hover-scale:  1.02;
 }
+
 
 /* =========================================
-   1. SCROLL SUAVE
+   1. KEYFRAMES
    ========================================= */
-html {
-    scroll-behavior: smooth;
-}
 
-/* =========================================
-   2. ENTRADA DE ELEMENTOS
-   ========================================= */
-@keyframes fadeSlideIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
+/* ---------- Entradas ---------- */
 @keyframes fadeIn {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
-.animate-on-load {
-    animation: fadeIn var(--anim-load) var(--ease-out) both;
+@keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-.top-bar.animate-on-load,
-.site-footer.animate-on-load {
-    animation: fadeSlideIn var(--anim-load) var(--ease-out) both;
+@keyframes heroTitleIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-22px) scale(0.94);
+        filter: blur(8px);
+    }
+    60% {
+        filter: blur(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
 }
+
+@keyframes socialIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-14px) scale(0.55) rotate(-10deg);
+    }
+    70% {
+        transform: translateY(2px) scale(1.05) rotate(2deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0);
+    }
+}
+
+@keyframes cardFadeUp {
+    from { opacity: 0; transform: translateY(26px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* ---------- Feedback de clique ---------- */
+@keyframes cardPulse {
+    0%   { transform: scale(0.96); }
+    45%  { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+@keyframes iconBurst {
+    0%   { transform: scale(1)    rotate(0); }
+    40%  { transform: scale(1.28) rotate(-8deg); }
+    70%  { transform: scale(0.94) rotate(4deg); }
+    100% { transform: scale(1)    rotate(0); }
+}
+
+@keyframes rippleExpand {
+    0%   { transform: scale(0);   opacity: 0.75; }
+    100% { transform: scale(3.6); opacity: 0; }
+}
+
+/* ---------- Foco acessível ---------- */
+@keyframes cardFocusPulse {
+    0%, 100% {
+        box-shadow:
+            0 0 0 3px rgba(255, 255, 255, 0.7),
+            0 0 22px rgba(232, 53, 60, 0.35);
+    }
+    50% {
+        box-shadow:
+            0 0 0 3px rgba(255, 255, 255, 0.9),
+            0 0 34px rgba(232, 53, 60, 0.60);
+    }
+}
+
+/* ---------- Modal ---------- */
+@keyframes modalTitlePulse {
+    0%, 100% {
+        box-shadow:
+            0 0 24px rgba(255, 255, 255, 0.06),
+            inset 0 0 12px rgba(255, 255, 255, 0.05);
+    }
+    50% {
+        box-shadow:
+            0 0 34px rgba(232, 53, 60, 0.30),
+            0 0 60px rgba(232, 53, 60, 0.16),
+            inset 0 0 16px rgba(255, 255, 255, 0.10);
+    }
+}
+
+@keyframes crownBob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(-3px); }
+}
+
+/* ---------- Ambiente ---------- */
+@keyframes bgBreath {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
+}
+
+@keyframes titleGlow {
+    0%, 100% { filter: drop-shadow(0 2px 18px rgba(0, 0, 0, 0.55)); }
+    50%      { filter: drop-shadow(0 2px 26px rgba(255, 255, 255, 0.14)); }
+}
+
 
 /* =========================================
-   3. MODAL — OVERLAY + CONTAINER
+   2. SCROLL SUAVE
+   ========================================= */
+html {
+    scroll-behavior: smooth;
+}
+
+
+/* =========================================
+   3. FUNDO — RESPIRAÇÃO AMBIENTE
+   ========================================= */
+.page-bg {
+    animation: bgBreath 22s var(--ease-in-out) infinite;
+    will-change: transform;
+    transform-origin: center center;
+}
+
+
+/* =========================================
+   4. ENTRADA DO HERO (título + socials)
+   ========================================= */
+
+/* Título: fade + slide + blur-out, depois glow suave infinito */
+.hero-title {
+    animation:
+        heroTitleIn 900ms var(--ease-out) 100ms backwards,
+        titleGlow   6s   var(--ease-in-out) 1100ms infinite;
+    will-change: transform, opacity, filter;
+}
+
+/* Redes sociais — entrada em cascata */
+.top-socials .social-link {
+    animation: socialIn 620ms var(--ease-bounce) backwards;
+}
+
+.top-socials .social-link:nth-child(1) { animation-delay: 350ms; }
+.top-socials .social-link:nth-child(2) { animation-delay: 430ms; }
+.top-socials .social-link:nth-child(3) { animation-delay: 510ms; }
+.top-socials .social-link:nth-child(4) { animation-delay: 590ms; }
+.top-socials .social-link:nth-child(5) { animation-delay: 670ms; }
+
+
+/* =========================================
+   5. CARDS — ENTRADA EM CASCATA
+   --------------------------------------------------
+   fill-mode "backwards" (não "both") para que
+   hover/active possam sobrescrever o transform
+   depois que a animação termina.
+   ========================================= */
+.card-item {
+    animation: cardFadeUp var(--anim-card-in) var(--ease-out) backwards;
+    animation-delay: calc(var(--card-index, 0) * 90ms + 200ms);
+    will-change: transform, opacity;
+}
+
+
+/* =========================================
+   6. CARDS — HOVER / ACTIVE / CLICK
+   ========================================= */
+.card-item {
+    transition:
+        transform    var(--anim-base) var(--ease-out),
+        box-shadow   var(--anim-slow) var(--ease-out),
+        background   var(--anim-base) var(--ease-out),
+        border-color var(--anim-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+    .card-item:hover {
+        transform: scale(var(--card-hover-scale)) translateY(-3px);
+    }
+}
+
+.card-item:active {
+    transform: scale(var(--press-scale-soft));
+    transition: transform 90ms var(--ease-out);
+}
+
+/* Pulso ao clicar */
+.card-item.card-pulse {
+    animation: cardPulse 420ms var(--ease-bounce);
+}
+
+/* Burst no ícone ao clicar */
+.card-item.card-pulse .card-icon,
+.card-item.card-pulse .card-icon img,
+.card-item.card-pulse .card-icon svg {
+    animation: iconBurst 420ms var(--ease-bounce);
+}
+
+/* Ícone reage suavemente no hover */
+.card-icon {
+    transition: transform var(--anim-slow) var(--ease-out);
+}
+
+@media (hover: hover) {
+    .card-item:hover .card-icon {
+        transform: translateY(-50%) scale(1.08);
+    }
+}
+
+/* Shimmer — brilho diagonal que atravessa no hover */
+.card-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.18) 50%,
+        transparent 60%
+    );
+    transform: translateX(-120%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0ms;
+}
+
+@media (hover: hover) {
+    .card-item:hover::after {
+        opacity: 1;
+        transform: translateX(120%);
+        transition:
+            transform 900ms var(--ease-out),
+            opacity   150ms linear;
+    }
+}
+
+
+/* =========================================
+   7. CARDS — FOCO VISÍVEL
+   ========================================= */
+.card-item:focus-visible {
+    outline: none;
+    animation: cardFocusPulse 1.6s var(--ease-in-out) infinite;
+}
+
+
+/* =========================================
+   8. RIPPLE (cards + botões do modal)
+   ========================================= */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.42);
+    transform: scale(0);
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 0;
+    animation: rippleExpand var(--anim-ripple) var(--ease-out) forwards;
+}
+
+.modal-btn-secondary .ripple {
+    background: rgba(232, 53, 60, 0.35);
+}
+
+
+/* =========================================
+   9. SOCIAL LINKS — HOVER / ACTIVE
+   ========================================= */
+.social-link {
+    transition:
+        opacity      var(--anim-base) var(--ease-out),
+        transform    var(--anim-base) var(--ease-out),
+        box-shadow   var(--anim-base) var(--ease-out),
+        background   var(--anim-base) var(--ease-out),
+        border-color var(--anim-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+    .social-link:hover {
+        transform: translateY(-3px) scale(var(--hover-scale));
+    }
+}
+
+.social-link:active {
+    transform: scale(0.88);
+    transition: transform 90ms var(--ease-out);
+}
+
+
+/* =========================================
+   10. MODAL — OVERLAY + CONTAINER
    ========================================= */
 .modal-overlay {
     transition:
@@ -85,8 +359,9 @@ html {
     transition: transform var(--anim-slow) var(--ease-in-out);
 }
 
+
 /* =========================================
-   4. BOTÃO FECHAR (X)
+   11. MODAL — BOTÃO FECHAR (X)
    ========================================= */
 .modal-close-btn {
     transition:
@@ -97,8 +372,10 @@ html {
     will-change: transform;
 }
 
-.modal-close-btn:hover {
-    transform: rotate(90deg);
+@media (hover: hover) {
+    .modal-close-btn:hover {
+        transform: rotate(90deg);
+    }
 }
 
 .modal-close-btn:active {
@@ -114,8 +391,9 @@ html {
     opacity: 0.85;
 }
 
+
 /* =========================================
-   5. BOTÕES DO MODAL — PRESS / HOVER / RIPPLE
+   12. MODAL — BOTÕES DE AÇÃO
    ========================================= */
 .modal-btn {
     position: relative;
@@ -131,8 +409,10 @@ html {
     will-change: transform;
 }
 
-.modal-btn:hover {
-    transform: translateY(-1px);
+@media (hover: hover) {
+    .modal-btn:hover {
+        transform: translateY(-1px);
+    }
 }
 
 .modal-btn:active {
@@ -140,255 +420,73 @@ html {
     transition: transform 90ms var(--ease-out);
 }
 
-.ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.45);
-    transform: scale(0);
-    opacity: 0.9;
-    pointer-events: none;
-    z-index: -1;
-    animation: rippleExpand var(--anim-ripple) var(--ease-out) forwards;
-}
-
-.modal-btn-secondary .ripple {
-    background: rgba(229, 9, 20, 0.35);
-}
-
-@keyframes rippleExpand {
-    to { transform: scale(4); opacity: 0; }
-}
 
 /* =========================================
-   6. CÍRCULO 18+ — PULSE
+   13. MODAL — CÍRCULO 18+ E COROA
    ========================================= */
 #modal-title {
     animation: modalTitlePulse 3s var(--ease-in-out) infinite;
 }
 
-@keyframes modalTitlePulse {
-    0%, 100% {
-        box-shadow:
-            0 0 24px rgba(255, 255, 255, 0.06),
-            inset 0 0 12px rgba(255, 255, 255, 0.05);
-    }
-    50% {
-        box-shadow:
-            0 0 34px rgba(229, 9, 20, 0.28),
-            0 0 60px rgba(229, 9, 20, 0.14),
-            inset 0 0 16px rgba(255, 255, 255, 0.08);
-    }
-}
-
-/* =========================================
-   7. COROA — BOB
-   ========================================= */
 #modal-title::before {
     animation: crownBob 4s var(--ease-in-out) infinite;
 }
 
-@keyframes crownBob {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50%      { transform: translateX(-50%) translateY(-3px); }
-}
 
 /* =========================================
-   8. CARDS — ENTRADA EM CASCATA
-   ========================================= */
-@keyframes cardFadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-.card-item {
-    opacity: 0;
-    animation: cardFadeUp var(--anim-card-in) var(--ease-out) both;
-    animation-delay: calc(var(--card-index, 0) * 0.1s + 0.1s);
-    transition:
-        transform   var(--anim-base) var(--ease-out),
-        box-shadow  var(--anim-base) var(--ease-out),
-        filter      var(--anim-base) var(--ease-out);
-}
-
-@media (hover: hover) {
-    .card-item:hover {
-        transform: scale(var(--card-hover-scale)) translateY(-4px);
-    }
-}
-
-.card-item:active {
-    transform: scale(var(--press-scale-soft));
-    transition: transform 90ms var(--ease-out);
-}
-
-/* =========================================
-   9. LINKS SOCIAIS — HOVER + PRESS
-   ========================================= */
-.social-link {
-    transition:
-        opacity     var(--anim-base) var(--ease-out),
-        transform   var(--anim-base) var(--ease-out),
-        box-shadow  var(--anim-base) var(--ease-out),
-        background  var(--anim-base) var(--ease-out),
-        color       var(--anim-base) var(--ease-out);
-}
-
-.social-link:hover,
-.social-link:focus-visible {
-    transform: translateY(-2px) scale(var(--hover-scale));
-}
-
-.social-link:active {
-    transform: scale(0.92);
-    transition: transform 90ms var(--ease-out);
-}
-
-/* =========================================
-   10. LOGO — HOVER
-   ========================================= */
-.logo {
-    transition:
-        filter    var(--anim-base) var(--ease-out),
-        transform var(--anim-base) var(--ease-out);
-}
-
-.logo:hover {
-    transform: scale(var(--hover-scale));
-}
-
-/* =========================================
-   11. CARDS — PRESS + MICRO-ANIMAÇÕES
-   ========================================= */
-.card-item img {
-    transition: transform 120ms var(--ease-out);
-}
-
-.card-item:active img {
-    transform: scale(0.96);
-    transition: transform 80ms var(--ease-out);
-}
-
-@media (hover: hover) {
-    .card-item:hover img {
-        transform: scale(1.04);
-        filter: brightness(1.08);
-    }
-}
-
-/* Micro-pulso ao clicar */
-@keyframes cardPulse {
-    0%   { transform: scale(0.94); }
-    45%  { transform: scale(1.03); }
-    100% { transform: scale(1); }
-}
-
-.card-item.card-pulse {
-    animation: cardPulse 380ms var(--ease-bounce);
-}
-
-/* Shimmer no hover */
-.card-item::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(
-        105deg,
-        transparent 40%,
-        rgba(255, 255, 255, 0.18) 50%,
-        transparent 60%
-    );
-    transform: translateX(-120%);
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0ms;
-}
-
-@media (hover: hover) {
-    .card-item:hover::after {
-        opacity: 1;
-        transform: translateX(120%);
-        transition:
-            transform 900ms var(--ease-out),
-            opacity   150ms linear;
-    }
-}
-
-/* Foco visível */
-.card-item:focus-visible {
-    outline: none;
-    box-shadow:
-        0 0 0 3px var(--color-text-muted),
-        0 0 20px rgba(229, 9, 20, 0.45);
-    animation: cardFocusPulse 1.6s var(--ease-in-out) infinite;
-}
-
-@keyframes cardFocusPulse {
-    0%, 100% {
-        box-shadow:
-            0 0 0 3px var(--color-text-muted),
-            0 0 20px rgba(229, 9, 20, 0.35);
-    }
-    50% {
-        box-shadow:
-            0 0 0 3px var(--color-text-muted),
-            0 0 30px rgba(229, 9, 20, 0.60);
-    }
-}
-
-/* =========================================
-   12. ACESSIBILIDADE — MOVIMENTO REDUZIDO
-   --------------------------------------------------
-   IMPORTANTE: o vídeo NÃO é escondido aqui.
-   Ele é conteúdo (não animação de UI) e é apenas
-   PAUSADO pelo JS quando esta preferência está ativa.
-   Assim o primeiro frame continua visível.
+   14. ACESSIBILIDADE — MOVIMENTO REDUZIDO
    ========================================= */
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
 
-    .animate-on-load,
-    .card-item {
+    /* Desliga animações de entrada e ambientes */
+    .hero-title,
+    .top-socials .social-link,
+    .card-item,
+    .page-bg,
+    #modal-title,
+    #modal-title::before {
         animation: none !important;
         opacity: 1 !important;
         transform: none !important;
+        filter: none !important;
     }
 
+    /* Mantém posicionamento do ícone do card */
+    .card-icon,
+    .card-item:hover .card-icon {
+        transform: translateY(-50%) !important;
+    }
+
+    /* Modal sem bounce */
     .modal-container,
     .modal-overlay.active .modal-container,
     .modal-overlay.is-closing .modal-container {
         transform: none !important;
     }
 
+    /* Botões / links sem transform */
     .modal-close-btn,
     .modal-close-btn:hover,
     .modal-close-btn:active,
-    .modal-close-btn.is-closing {
-        transform: none !important;
-    }
-
+    .modal-close-btn.is-closing,
     .modal-btn,
     .modal-btn:hover,
     .modal-btn:active,
     .social-link,
     .social-link:hover,
     .social-link:active,
-    .logo,
-    .logo:hover,
     .card-item:hover,
-    .card-item:active,
-    .card-item:hover img,
-    .card-item:active img {
+    .card-item:active {
         transform: none !important;
     }
 
-    #modal-title,
-    #modal-title::before {
-        animation: none !important;
-    }
-
-    .ripple                  { display: none !important; }
-    .card-item::after        { display: none !important; }
-    .card-item.card-pulse    { animation: none !important; }
+    /* Esconde efeitos visuais de clique */
+    .ripple               { display: none !important; }
+    .card-item::after     { display: none !important; }
+    .card-item.card-pulse { animation: none !important; }
     .card-item:focus-visible { animation: none !important; }
+    .card-item.card-pulse .card-icon,
+    .card-item.card-pulse .card-icon img,
+    .card-item.card-pulse .card-icon svg { animation: none !important; }
 }
