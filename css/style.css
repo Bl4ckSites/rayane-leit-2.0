@@ -1,5 +1,209 @@
+/* ==========================================================================
+   RAIANE LEIT — style.css
+   Layout glassmorphism: título + socials no topo, cards de vidro abaixo.
+   --------------------------------------------------------------------------
+   Camadas (do fundo para frente):
+     0     → .page-bg                        (raiane-bg.jpg fixa + overlay)
+     1/2   → #video-background-container / .video-overlay  (legado, oculto)
+     10    → .main-container                 (conteúdo)
+     9999  → #age-modal                      (modal +18)
+   ========================================================================== */
+
+
 /* =========================================
-   8. CARDS — Glassmorphism
+   1. VARIÁVEIS
+   ========================================= */
+:root {
+    --color-bg: #000000;
+    --color-text: #FFFFFF;
+    --color-text-soft: rgba(255, 255, 255, 0.75);
+    --color-accent: #E8353C;
+
+    /* Glass tokens */
+    --glass-bg:              rgba(255, 255, 255, 0.06);
+    --glass-bg-hover:        rgba(255, 255, 255, 0.11);
+    --glass-border:          rgba(255, 255, 255, 0.16);
+    --glass-border-strong:   rgba(255, 255, 255, 0.30);
+    --glass-blur:            22px;
+    --glass-saturate:        150%;
+
+    /* Marca (usada apenas nos ícones SVG inline do Telegram) */
+    --brand-telegram: #229ED9;
+
+    /* Raios */
+    --radius-card:   20px;
+    --radius-pill:   999px;
+    --radius-circle: 50%;
+
+    /* Espaçamentos fluidos */
+    --sp-xs: clamp(0.3rem, 0.6vw, 0.5rem);
+    --sp-sm: clamp(0.5rem, 1vw, 0.7rem);
+    --sp-md: clamp(0.7rem, 1.4vw, 1rem);
+    --sp-lg: clamp(1rem, 2vw, 1.8rem);
+
+    --max-width: 480px;
+    --scrollbar-compensation: 0px;
+}
+
+
+/* =========================================
+   2. RESET / BASE
+   ========================================= */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    background-color: var(--color-bg);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.5;
+    overflow-x: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body.modal-active {
+    overflow: hidden;
+    padding-right: var(--scrollbar-compensation);
+    scrollbar-gutter: stable;
+}
+
+
+/* =========================================
+   3. FUNDO FULL-SCREEN
+   ========================================= */
+.page-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image: url('../raiane-bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    pointer-events: none;
+}
+
+.page-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.55) 0%,
+        rgba(0, 0, 0, 0.20) 32%,
+        rgba(0, 0, 0, 0.25) 62%,
+        rgba(0, 0, 0, 0.72) 100%
+    );
+    pointer-events: none;
+}
+
+
+/* =========================================
+   4. CAMADAS LEGADAS DE VÍDEO (desativadas)
+   ========================================= */
+#video-background-container,
+.video-overlay {
+    display: none !important;
+}
+
+
+/* =========================================
+   5. CONTAINER PRINCIPAL
+   ========================================= */
+.main-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: clamp(28px, 6vh, 64px) clamp(16px, 4vw, 24px) clamp(28px, 6vh, 56px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(22px, 4vh, 38px);
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+
+/* =========================================
+   6. HERO — TÍTULO + REDES SOCIAIS
+   ========================================= */
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: clamp(14px, 2.5vh, 24px);
+    padding: clamp(4px, 1.5vh, 16px) 0;
+}
+
+.hero-title {
+    font-size: clamp(1.85rem, 6vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: #fff;
+    text-shadow:
+        0 2px 22px rgba(0, 0, 0, 0.55),
+        0 1px 3px rgba(0, 0, 0, 0.40);
+}
+
+
+/* =========================================
+   7. REDES SOCIAIS — BOTÕES RESPONSIVOS
+   --------------------------------------------------
+   Botão: clamp(38px → 50px) acompanha a viewport.
+   SVG:   45% do botão (escala junto, sempre).
+   ========================================= */
+.top-socials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(6px, 1.6vw, 12px);
+    width: 100%;
+}
+
+.social-link {
+    display: inline-grid;
+    place-items: center;
+    width: clamp(38px, 10vw, 50px);
+    height: clamp(38px, 10vw, 50px);
+    border-radius: var(--radius-circle);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    backdrop-filter: blur(10px) saturate(140%);
+    flex: 0 0 auto;
+    text-decoration: none;
+}
+
+.social-link svg {
+    width: 45%;
+    height: 45%;
+    display: block;
+    pointer-events: none;
+}
+
+
+/* =========================================
+   8. CARDS — GLASSMORPHISM
    ========================================= */
 .cards-section {
     width: 100%;
@@ -25,6 +229,7 @@
 
     border-radius: var(--radius-card);
     background: var(--glass-bg);
+
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
 
@@ -45,10 +250,10 @@
     isolation: isolate;
 
     transition:
-        background 0.22s ease,
-        border-color 0.22s ease,
-        transform 0.22s ease,
-        box-shadow 0.25s ease;
+        background    0.22s ease,
+        border-color  0.22s ease,
+        transform     0.22s ease,
+        box-shadow    0.25s ease;
 }
 
 .card-item:hover,
@@ -60,11 +265,6 @@
         0 0 24px rgba(255, 255, 255, 0.06),
         inset 0 1px 0 rgba(255, 255, 255, 0.18);
     outline: none;
-    transform: translateY(-1px);
-}
-
-.card-item:active {
-    transform: translateY(0);
 }
 
 .card-label {
@@ -78,11 +278,14 @@
     z-index: 1;
 }
 
-/* -------------------------------------------------------------
-   Ícone do card — container circular único para <img> e <svg>.
-   O <img> traz o design pronto (círculo colorido + logo).
-   O <svg> (Telegram) recebe o fundo azul via classe modificadora.
-------------------------------------------------------------- */
+
+/* =========================================
+   9. ÍCONE DO CARD
+   --------------------------------------------------
+   Container circular que aceita <img> OU <svg>.
+   - <img>: já vem com design pronto (círculo + logo)
+   - <svg>: recebe o fundo azul via .card-icon--vip/free
+   ========================================= */
 .card-icon {
     position: absolute;
     left: 12px;
@@ -101,7 +304,6 @@
     line-height: 0;
 }
 
-/* Quando o ícone for uma IMAGEM (Privacy, Exclusivos, OnlyFans, FatalFans) */
 .card-icon img {
     width: 100%;
     height: 100%;
@@ -112,7 +314,6 @@
     -webkit-user-drag: none;
 }
 
-/* Quando o ícone for SVG inline (Telegram VIP / Telegram Free) */
 .card-icon svg {
     width: 100%;
     height: 100%;
@@ -120,7 +321,7 @@
     color: #fff;
 }
 
-/* Fundo azul apenas nos cards Telegram (que usam SVG) */
+/* Fundo azul apenas nos cards Telegram (que usam SVG inline) */
 .card-icon--vip,
 .card-icon--free {
     background: var(--brand-telegram);
@@ -129,12 +330,342 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.20);
 }
 
-/* --- Fallback de padding no mobile --- */
+
+/* =========================================
+   10. MODAL +18
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: grid;
+    place-items: center;
+
+    padding:
+        max(var(--sp-md), env(safe-area-inset-top))
+        max(var(--sp-md), env(safe-area-inset-right))
+        max(var(--sp-md), env(safe-area-inset-bottom))
+        max(var(--sp-md), env(safe-area-inset-left));
+
+    background: rgba(0, 0, 0, 0.72);
+
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    backdrop-filter: blur(14px) saturate(120%);
+
+    opacity: 0;
+    visibility: hidden;
+
+    overscroll-behavior: contain;
+    isolation: isolate;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-overlay[hidden] {
+    display: none !important;
+}
+
+.modal-overlay,
+.modal-container {
+    pointer-events: auto;
+}
+
+.modal-container {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    max-height: min(90vh, 90dvh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 48px 24px 28px;
+
+    background:
+        radial-gradient(120% 70% at 50% 0%, rgba(232, 53, 60, 0.12) 0%, transparent 55%),
+        linear-gradient(145deg, #121319 0%, #08090d 100%);
+
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.85),
+        0 0 40px rgba(255, 255, 255, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+    text-align: center;
+    isolation: isolate;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(180, 180, 180, 0.5) transparent;
+}
+
+.modal-container::-webkit-scrollbar { width: 6px; }
+.modal-container::-webkit-scrollbar-track { background: transparent; }
+.modal-container::-webkit-scrollbar-thumb {
+    background: rgba(180, 180, 180, 0.4);
+    border-radius: 999px;
+}
+.modal-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(180, 180, 180, 0.7);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-circle);
+    color: #fff;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.modal-close-btn:hover,
+.modal-close-btn:focus-visible {
+    background: rgba(232, 53, 60, 0.22);
+    border-color: var(--glass-border-strong);
+    outline: none;
+}
+
+.modal-close-btn svg {
+    pointer-events: none;
+    display: block;
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#modal-title {
+    position: relative;
+    width: 92px;
+    height: 92px;
+    border-radius: var(--radius-circle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #050505;
+    border: 1px solid var(--glass-border);
+    font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: #fff;
+    margin: 0 auto 20px;
+    box-shadow:
+        0 0 24px rgba(255, 255, 255, 0.06),
+        inset 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+#modal-title::before {
+    content: '';
+    position: absolute;
+    top: -26px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 34px;
+    height: 22px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 18' fill='none' stroke='%23B8BCC4' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 15.5 L2 6 L8 10 L12 3 L16 10 L22 6 L21 15.5 Z'/%3E%3Cpath d='M3 15.5 H21'/%3E%3Ccircle cx='12' cy='2.4' r='0.9' fill='%23B8BCC4'/%3E%3Ccircle cx='2' cy='4.8' r='0.9' fill='%23B8BCC4'/%3E%3Ccircle cx='22' cy='4.8' r='0.9' fill='%23B8BCC4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+    pointer-events: none;
+}
+
+.modal-subtitle {
+    font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 12px;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+}
+
+.modal-description {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin: 0 0 26px;
+    max-width: 300px;
+}
+
+.modal-btn {
+    width: 100%;
+    padding: 16px 24px;
+    border: none;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: filter 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.modal-btn-primary {
+    background: linear-gradient(135deg, #FF1A1A 0%, #CC0000 100%);
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(200, 200, 200, 0.35);
+    box-shadow:
+        0 4px 20px rgba(230, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.modal-btn-primary:hover,
+.modal-btn-primary:focus-visible {
+    filter: brightness(1.12);
+    border-color: var(--glass-border-strong);
+    box-shadow:
+        0 6px 26px rgba(230, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    outline: none;
+}
+
+.modal-btn-secondary {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 500;
+    font-size: 14px;
+    margin-top: 6px;
+    padding: 12px;
+    border: 1px solid var(--glass-border);
+}
+
+.modal-btn-secondary:hover,
+.modal-btn-secondary:focus-visible {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--glass-border-strong);
+    outline: none;
+}
+
+.modal-footer-note {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.modal-footer-note span {
+    color: var(--color-accent);
+    font-size: 16px;
+    line-height: 1;
+}
+
+.modal-footer-note p {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================
+   11. RESPONSIVO
+   ========================================= */
 @media (max-width: 380px) {
     .card-item {
         padding: 10px 60px;
     }
     .card-icon {
         left: 10px;
+    }
+}
+
+@media (min-width: 700px) {
+    .main-container {
+        padding-top: clamp(36px, 7vh, 80px);
+        padding-bottom: clamp(36px, 7vh, 80px);
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-overlay {
+        padding: var(--sp-sm);
+    }
+    .modal-container {
+        max-width: 100%;
+        max-height: min(88vh, 88dvh);
+        padding: 44px 18px 24px;
+    }
+    .modal-subtitle {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 360px) {
+    .modal-container {
+        padding: 40px 14px 20px;
+    }
+    #modal-title {
+        width: 74px;
+        height: 74px;
+        font-size: 28px;
+    }
+    #modal-title::before {
+        top: -22px;
+        width: 28px;
+        height: 18px;
+    }
+    .modal-subtitle {
+        font-size: 17px;
+    }
+    .modal-description {
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================
+   12. ACESSIBILIDADE
+   ========================================= */
+:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .card-item,
+    .social-link {
+        background: rgba(0, 0, 0, 0.55);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+    .modal-overlay {
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        background: rgba(0, 0, 0, 0.95);
     }
 }
