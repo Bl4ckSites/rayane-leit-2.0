@@ -1,6 +1,6 @@
 /* ==========================================================================
    RAIANE LEIT — main.js
-   Cards em vidro escuro: imagem (pasta /icons) OU SVG inline (Telegram).
+   Cards em vidro claro: imagem (pasta /icons) OU SVG inline (Telegram).
    ========================================================================== */
 'use strict';
 
