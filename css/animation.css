@@ -1,8 +1,16 @@
 /* ==========================================================================
    RAIANE LEIT — animation.css
-   Todas as animações do site: entrada, hover, press, click e ambiente.
+   Animações: entrada (título → socials em zigue-zague → cards) + interações.
    --------------------------------------------------------------------------
    Ordem de carregamento: style.css → animation.css (este sobrescreve).
+   Timeline de entrada:
+     Título      → 100ms  · 800ms
+     Instagram   → 1050ms · 550ms · de baixo pra cima
+     Telegram    → 1120ms · 550ms · de cima pra baixo
+     X           → 1190ms · 550ms · de baixo pra cima
+     Facebook    → 1260ms · 550ms · de cima pra baixo
+     TikTok      → 1330ms · 550ms · de baixo pra cima
+     Cards 1-6   → 1900ms + (index × 75ms) · 600ms
    ========================================================================== */
 
 
@@ -46,13 +54,14 @@
     to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes heroTitleIn {
+/* Título: de baixo pra cima com blur→foco */
+@keyframes titleInUp {
     0% {
         opacity: 0;
-        transform: translateY(-22px) scale(0.94);
-        filter: blur(8px);
+        transform: translateY(42px) scale(0.92);
+        filter: blur(7px);
     }
-    60% {
+    55% {
         filter: blur(0);
     }
     100% {
@@ -62,23 +71,51 @@
     }
 }
 
-@keyframes socialIn {
+/* Social: sobe de baixo pra cima com leve overshoot */
+@keyframes socialInUp {
     0% {
         opacity: 0;
-        transform: translateY(-14px) scale(0.55) rotate(-10deg);
+        transform: translateY(24px) scale(0.7);
     }
-    70% {
-        transform: translateY(2px) scale(1.05) rotate(2deg);
+    65% {
+        transform: translateY(-3px) scale(1.06);
     }
     100% {
         opacity: 1;
-        transform: translateY(0) scale(1) rotate(0);
+        transform: translateY(0) scale(1);
     }
 }
 
+/* Social: desce de cima pra baixo com leve overshoot */
+@keyframes socialInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-24px) scale(0.7);
+    }
+    65% {
+        transform: translateY(3px) scale(1.06);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Card: sobe com blur→foco */
 @keyframes cardFadeUp {
-    from { opacity: 0; transform: translateY(26px) scale(0.98); }
-    to   { opacity: 1; transform: translateY(0)    scale(1); }
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.97);
+        filter: blur(4px);
+    }
+    55% {
+        filter: blur(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
 }
 
 /* ---------- Feedback de clique ---------- */
@@ -165,45 +202,58 @@ html {
 
 
 /* =========================================
-   4. ENTRADA DO HERO (título + socials)
+   4. ENTRADA — TÍTULO
    ========================================= */
-
-/* Título: fade + slide + blur-out, depois glow suave infinito */
 .hero-title {
     animation:
-        heroTitleIn 900ms var(--ease-out) 100ms backwards,
-        titleGlow   6s   var(--ease-in-out) 1100ms infinite;
+        titleInUp  800ms var(--ease-out) 100ms backwards,
+        titleGlow  6s    var(--ease-in-out) 1000ms infinite;
     will-change: transform, opacity, filter;
 }
 
-/* Redes sociais — entrada em cascata */
-.top-socials .social-link {
-    animation: socialIn 620ms var(--ease-bounce) backwards;
-}
-
-.top-socials .social-link:nth-child(1) { animation-delay: 350ms; }
-.top-socials .social-link:nth-child(2) { animation-delay: 430ms; }
-.top-socials .social-link:nth-child(3) { animation-delay: 510ms; }
-.top-socials .social-link:nth-child(4) { animation-delay: 590ms; }
-.top-socials .social-link:nth-child(5) { animation-delay: 670ms; }
-
 
 /* =========================================
-   5. CARDS — ENTRADA EM CASCATA
+   5. ENTRADA — REDES SOCIAIS (ZIGUE-ZAGUE)
    --------------------------------------------------
-   fill-mode "backwards" (não "both") para que
-   hover/active possam sobrescrever o transform
-   depois que a animação termina.
+   Índices ímpares (1, 3, 5): sobem de baixo pra cima
+   Índices pares   (2, 4)   : descem de cima pra baixo
    ========================================= */
-.card-item {
-    animation: cardFadeUp var(--anim-card-in) var(--ease-out) backwards;
-    animation-delay: calc(var(--card-index, 0) * 90ms + 200ms);
+.top-socials .social-link {
     will-change: transform, opacity;
 }
 
+.top-socials .social-link:nth-child(1) {
+    animation: socialInUp   550ms var(--ease-bounce) 1050ms backwards;
+}
+.top-socials .social-link:nth-child(2) {
+    animation: socialInDown 550ms var(--ease-bounce) 1120ms backwards;
+}
+.top-socials .social-link:nth-child(3) {
+    animation: socialInUp   550ms var(--ease-bounce) 1190ms backwards;
+}
+.top-socials .social-link:nth-child(4) {
+    animation: socialInDown 550ms var(--ease-bounce) 1260ms backwards;
+}
+.top-socials .social-link:nth-child(5) {
+    animation: socialInUp   550ms var(--ease-bounce) 1330ms backwards;
+}
+
 
 /* =========================================
-   6. CARDS — HOVER / ACTIVE / CLICK
+   6. ENTRADA — CARDS (CASCATA)
+   --------------------------------------------------
+   fill-mode "backwards" para que hover/active
+   possam sobrescrever o transform após terminar.
+   ========================================= */
+.card-item {
+    animation: cardFadeUp var(--anim-card-in) var(--ease-out) backwards;
+    animation-delay: calc(var(--card-index, 0) * 75ms + 1900ms);
+    will-change: transform, opacity, filter;
+}
+
+
+/* =========================================
+   7. CARDS — HOVER / ACTIVE / CLICK
    ========================================= */
 .card-item {
     transition:
@@ -247,7 +297,7 @@ html {
     }
 }
 
-/* Shimmer — brilho diagonal que atravessa no hover */
+/* Shimmer — brilho diagonal no hover */
 .card-item::after {
     content: '';
     position: absolute;
@@ -277,7 +327,7 @@ html {
 
 
 /* =========================================
-   7. CARDS — FOCO VISÍVEL
+   8. CARDS — FOCO VISÍVEL
    ========================================= */
 .card-item:focus-visible {
     outline: none;
@@ -286,7 +336,7 @@ html {
 
 
 /* =========================================
-   8. RIPPLE (cards + botões do modal)
+   9. RIPPLE (cards + botões do modal)
    ========================================= */
 .ripple {
     position: absolute;
@@ -305,7 +355,7 @@ html {
 
 
 /* =========================================
-   9. SOCIAL LINKS — HOVER / ACTIVE
+   10. SOCIAL LINKS — HOVER / ACTIVE
    ========================================= */
 .social-link {
     transition:
@@ -329,7 +379,7 @@ html {
 
 
 /* =========================================
-   10. MODAL — OVERLAY + CONTAINER
+   11. MODAL — OVERLAY + CONTAINER
    ========================================= */
 .modal-overlay {
     transition:
@@ -361,7 +411,7 @@ html {
 
 
 /* =========================================
-   11. MODAL — BOTÃO FECHAR (X)
+   12. MODAL — BOTÃO FECHAR (X)
    ========================================= */
 .modal-close-btn {
     transition:
@@ -393,7 +443,7 @@ html {
 
 
 /* =========================================
-   12. MODAL — BOTÕES DE AÇÃO
+   13. MODAL — BOTÕES DE AÇÃO
    ========================================= */
 .modal-btn {
     position: relative;
@@ -422,7 +472,7 @@ html {
 
 
 /* =========================================
-   13. MODAL — CÍRCULO 18+ E COROA
+   14. MODAL — CÍRCULO 18+ E COROA
    ========================================= */
 #modal-title {
     animation: modalTitlePulse 3s var(--ease-in-out) infinite;
@@ -434,12 +484,12 @@ html {
 
 
 /* =========================================
-   14. ACESSIBILIDADE — MOVIMENTO REDUZIDO
+   15. ACESSIBILIDADE — MOVIMENTO REDUZIDO
    ========================================= */
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
 
-    /* Desliga animações de entrada e ambientes */
+    /* Desliga entradas e ambientes */
     .hero-title,
     .top-socials .social-link,
     .card-item,
