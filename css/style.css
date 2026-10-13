@@ -1,10 +1,9 @@
 /* ==========================================================================
    RAIANE LEIT — style.css
-   Layout glassmorphism: título + socials no topo, cards de vidro abaixo.
+   Layout limpo: fundo fixo + título grande + cards escuros sólidos.
    --------------------------------------------------------------------------
    Camadas (do fundo para frente):
      0     → .page-bg                        (raiane-bg.jpg fixa + overlay)
-     1/2   → #video-background-container / .video-overlay  (legado, oculto)
      10    → .main-container                 (conteúdo)
      9999  → #age-modal                      (modal +18)
    ========================================================================== */
@@ -19,15 +18,21 @@
     --color-text-soft: rgba(255, 255, 255, 0.75);
     --color-accent: #E8353C;
 
-    /* Glass tokens */
-    --glass-bg:              rgba(255, 255, 255, 0.06);
-    --glass-bg-hover:        rgba(255, 255, 255, 0.11);
-    --glass-border:          rgba(255, 255, 255, 0.16);
-    --glass-border-strong:   rgba(255, 255, 255, 0.30);
-    --glass-blur:            22px;
-    --glass-saturate:        150%;
+    /* Cards — fundo escuro sólido (SEM blur) */
+    --card-bg:              rgba(12, 12, 14, 0.65);
+    --card-bg-hover:        rgba(28, 28, 32, 0.80);
+    --card-border:          rgba(255, 255, 255, 0.06);
+    --card-border-hover:    rgba(255, 255, 255, 0.18);
+    --card-shadow:          0 8px 28px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    --card-shadow-hover:    0 12px 34px rgba(0, 0, 0, 0.50), inset 0 1px 0 rgba(255, 255, 255, 0.10);
 
-    /* Marca (usada apenas nos ícones SVG inline do Telegram) */
+    /* Social links — vidro leve (não ofende visualmente) */
+    --social-bg:            rgba(255, 255, 255, 0.06);
+    --social-bg-hover:      rgba(255, 255, 255, 0.16);
+    --social-border:        rgba(255, 255, 255, 0.12);
+    --social-border-hover:  rgba(255, 255, 255, 0.30);
+
+    /* Telegram (SVG inline) */
     --brand-telegram: #229ED9;
 
     /* Raios */
@@ -35,12 +40,7 @@
     --radius-pill:   999px;
     --radius-circle: 50%;
 
-    /* Espaçamentos fluidos */
-    --sp-xs: clamp(0.3rem, 0.6vw, 0.5rem);
-    --sp-sm: clamp(0.5rem, 1vw, 0.7rem);
-    --sp-md: clamp(0.7rem, 1.4vw, 1rem);
-    --sp-lg: clamp(1rem, 2vw, 1.8rem);
-
+    /* Layout */
     --max-width: 480px;
     --scrollbar-compensation: 0px;
 }
@@ -69,7 +69,6 @@ body {
     color: var(--color-text);
     line-height: 1.5;
     overflow-x: hidden;
-    min-height: 100vh;
     min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -83,7 +82,7 @@ body.modal-active {
 
 
 /* =========================================
-   3. FUNDO FULL-SCREEN
+   3. FUNDO FIXO FULL-SCREEN
    ========================================= */
 .page-bg {
     position: fixed;
@@ -93,7 +92,6 @@ body.modal-active {
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
     pointer-events: none;
 }
 
@@ -113,16 +111,7 @@ body.modal-active {
 
 
 /* =========================================
-   4. CAMADAS LEGADAS DE VÍDEO (desativadas)
-   ========================================= */
-#video-background-container,
-.video-overlay {
-    display: none !important;
-}
-
-
-/* =========================================
-   5. CONTAINER PRINCIPAL
+   4. CONTAINER PRINCIPAL
    ========================================= */
 .main-container {
     position: relative;
@@ -134,13 +123,12 @@ body.modal-active {
     display: flex;
     flex-direction: column;
     gap: clamp(22px, 4vh, 38px);
-    min-height: 100vh;
     min-height: 100dvh;
 }
 
 
 /* =========================================
-   6. HERO — TÍTULO + REDES SOCIAIS
+   5. HERO — TÍTULO + REDES SOCIAIS
    ========================================= */
 .hero-section {
     display: flex;
@@ -153,22 +141,19 @@ body.modal-active {
 }
 
 .hero-title {
-    font-size: clamp(2.4rem, 9vw, 3.6rem);
+    font-size: clamp(2.6rem, 10vw, 4.2rem);
     font-weight: 700;
-    line-height: 1.08;
-    letter-spacing: -0.025em;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
     color: #fff;
     text-shadow:
-        0 2px 26px rgba(0, 0, 0, 0.60),
-        0 1px 3px rgba(0, 0, 0, 0.45);
+        0 2px 28px rgba(0, 0, 0, 0.65),
+        0 1px 4px rgba(0, 0, 0, 0.50);
 }
 
 
 /* =========================================
-   7. REDES SOCIAIS — BOTÕES RESPONSIVOS
-   --------------------------------------------------
-   Botão: clamp(32px → 40px) acompanha a viewport.
-   SVG:   45% do botão (escala junto, sempre).
+   6. REDES SOCIAIS — BOTÕES RESPONSIVOS
    ========================================= */
 .top-socials {
     display: flex;
@@ -186,8 +171,8 @@ body.modal-active {
     height: clamp(32px, 7vw, 40px);
     border-radius: var(--radius-circle);
     color: #fff;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: var(--social-bg);
+    border: 1px solid var(--social-border);
     -webkit-backdrop-filter: blur(10px) saturate(140%);
     backdrop-filter: blur(10px) saturate(140%);
     flex: 0 0 auto;
@@ -203,7 +188,7 @@ body.modal-active {
 
 
 /* =========================================
-   8. CARDS — GLASSMORPHISM
+   7. CARDS — FUNDO ESCURO SÓLIDO (SEM BLUR)
    ========================================= */
 .cards-section {
     width: 100%;
@@ -228,15 +213,10 @@ body.modal-active {
     padding: 12px 68px;
 
     border-radius: var(--radius-card);
-    background: var(--glass-bg);
+    background: var(--card-bg);
 
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-
-    border: 1px solid var(--glass-border);
-    box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.28),
-        inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
 
     color: #fff;
     font-weight: 600;
@@ -258,12 +238,9 @@ body.modal-active {
 
 .card-item:hover,
 .card-item:focus-visible {
-    background: var(--glass-bg-hover);
-    border-color: var(--glass-border-strong);
-    box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.35),
-        0 0 24px rgba(255, 255, 255, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    background: var(--card-bg-hover);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--card-shadow-hover);
     outline: none;
 }
 
@@ -280,11 +257,7 @@ body.modal-active {
 
 
 /* =========================================
-   9. ÍCONE DO CARD
-   --------------------------------------------------
-   Container circular que aceita <img> OU <svg>.
-   - <img>: já vem com design pronto (círculo + logo)
-   - <svg>: recebe o fundo azul via .card-icon--vip/free
+   8. ÍCONE DO CARD
    ========================================= */
 .card-icon {
     position: absolute;
@@ -332,7 +305,7 @@ body.modal-active {
 
 
 /* =========================================
-   10. MODAL +18
+   9. MODAL +18
    ========================================= */
 .modal-overlay {
     position: fixed;
@@ -343,10 +316,10 @@ body.modal-active {
     place-items: center;
 
     padding:
-        max(var(--sp-md), env(safe-area-inset-top))
-        max(var(--sp-md), env(safe-area-inset-right))
-        max(var(--sp-md), env(safe-area-inset-bottom))
-        max(var(--sp-md), env(safe-area-inset-left));
+        max(1rem, env(safe-area-inset-top))
+        max(1rem, env(safe-area-inset-right))
+        max(1rem, env(safe-area-inset-bottom))
+        max(1rem, env(safe-area-inset-left));
 
     background: rgba(0, 0, 0, 0.72);
 
@@ -388,7 +361,7 @@ body.modal-active {
         radial-gradient(120% 70% at 50% 0%, rgba(232, 53, 60, 0.12) 0%, transparent 55%),
         linear-gradient(145deg, #121319 0%, #08090d 100%);
 
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 24px;
 
     box-shadow:
@@ -423,7 +396,7 @@ body.modal-active {
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: var(--radius-circle);
     color: #fff;
     cursor: pointer;
@@ -434,7 +407,7 @@ body.modal-active {
 .modal-close-btn:hover,
 .modal-close-btn:focus-visible {
     background: rgba(232, 53, 60, 0.22);
-    border-color: var(--glass-border-strong);
+    border-color: rgba(255, 255, 255, 0.30);
     outline: none;
 }
 
@@ -462,7 +435,7 @@ body.modal-active {
     align-items: center;
     justify-content: center;
     background: #050505;
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
     font-size: 36px;
     font-weight: 700;
@@ -540,7 +513,7 @@ body.modal-active {
 .modal-btn-primary:hover,
 .modal-btn-primary:focus-visible {
     filter: brightness(1.12);
-    border-color: var(--glass-border-strong);
+    border-color: rgba(255, 255, 255, 0.30);
     box-shadow:
         0 6px 26px rgba(230, 0, 0, 0.6),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -554,14 +527,14 @@ body.modal-active {
     font-size: 14px;
     margin-top: 6px;
     padding: 12px;
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .modal-btn-secondary:hover,
 .modal-btn-secondary:focus-visible {
     color: #fff;
     background: rgba(255, 255, 255, 0.05);
-    border-color: var(--glass-border-strong);
+    border-color: rgba(255, 255, 255, 0.30);
     outline: none;
 }
 
@@ -593,27 +566,11 @@ body.modal-active {
 
 
 /* =========================================
-   11. RESPONSIVO
+   10. RESPONSIVO (só o modal precisa)
    ========================================= */
-@media (max-width: 380px) {
-    .card-item {
-        padding: 10px 60px;
-    }
-    .card-icon {
-        left: 10px;
-    }
-}
-
-@media (min-width: 700px) {
-    .main-container {
-        padding-top: clamp(36px, 7vh, 80px);
-        padding-bottom: clamp(36px, 7vh, 80px);
-    }
-}
-
 @media (max-width: 480px) {
     .modal-overlay {
-        padding: var(--sp-sm);
+        padding: 0.6rem;
     }
     .modal-container {
         max-width: 100%;
@@ -649,23 +606,9 @@ body.modal-active {
 
 
 /* =========================================
-   12. ACESSIBILIDADE
+   11. ACESSIBILIDADE
    ========================================= */
 :focus-visible {
     outline: 2px solid #fff;
     outline-offset: 3px;
-}
-
-@media (prefers-reduced-transparency: reduce) {
-    .card-item,
-    .social-link {
-        background: rgba(0, 0, 0, 0.55);
-        -webkit-backdrop-filter: none;
-        backdrop-filter: none;
-    }
-    .modal-overlay {
-        -webkit-backdrop-filter: none;
-        backdrop-filter: none;
-        background: rgba(0, 0, 0, 0.95);
-    }
 }
