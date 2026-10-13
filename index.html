@@ -5,16 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#000000">
     <meta name="robots" content="noindex, nofollow">
-    <title>Raiane Leite | Links Oficiais</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <title>Raiane Leit | Links Oficiais</title>
+    
+    <!-- CAMINHOS ORIGINAIS PRESERVADOS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- ============================================
-         MODAL +18 (preservado integralmente)
+         CAMADA DE VÍDEO (Preservada para compatibilidade com main.js)
+         ============================================ -->
+    <div id="video-background-container"></div>
+    <div class="video-overlay"></div>
+
+    <!-- ============================================
+         MODAL +18 (Estrutura original com IDs exatos para o main.js)
          ============================================ -->
     <div id="age-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
         <div class="modal-container">
@@ -31,8 +36,7 @@
                     Este link pode conter conteúdo explícito ou destinado exclusivamente a maiores de 18 anos.
                 </p>
                 <button class="modal-btn modal-btn-primary" id="modal-confirm" type="button">
-                    ✓
-                    Tenho 18 anos ou mais
+                    ✓ Tenho 18 anos ou mais
                 </button>
                 <button class="modal-btn modal-btn-secondary" id="modal-cancel" type="button">
                     Voltar
@@ -46,13 +50,9 @@
     </div>
 
     <!-- ============================================
-         CAMADA DE FUNDO — IMAGEM
+         NOVAS CAMADAS DE FUNDO (Para o Redesign)
          ============================================ -->
-    <div class="bg-image-layer" role="img" aria-label="Fotografia de Raiane Leite"></div>
-
-    <!-- ============================================
-         CAMADA DE ESCURECIMENTO
-         ============================================ -->
+    <div class="bg-image-layer" role="img" aria-label="Fotografia de fundo"></div>
     <div class="bg-overlay"></div>
 
     <!-- ============================================
@@ -60,16 +60,70 @@
          ============================================ -->
     <main class="main-container">
 
-        <!-- Cabeçalho -->
+        <!-- Top Bar (Preservada no DOM para o main.js, ocultada visualmente no mobile via CSS) -->
+        <header class="top-bar">
+            <img src="imgs/logo.webp" alt="Logo" class="logo" onerror="this.style.display='none'">
+            <div class="top-socials">
+                <a href="#" class="social-link" data-social="instagram" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="#" class="social-link" data-social="telegram" aria-label="Telegram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </a>
+                <a href="#" class="social-link" data-social="x" aria-label="X (Twitter)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"></path><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path></svg>
+                </a>
+                <a href="#" class="social-link" data-social="facebook" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="#" class="social-link" data-social="tiktok" aria-label="TikTok">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                </a>
+            </div>
+        </header>
+
+        <!-- Hero Section (Preservada no DOM para compatibilidade, ocultada no mobile via CSS) -->
+        <section class="hero-section">
+            <picture>
+                <source media="(min-width: 1000px)" srcset="imgs/desktop-hero.webp">
+                <img src="imgs/mobile-hero.webp" alt="Raiane Leite" class="hero-image" onerror="this.style.display='none'">
+            </picture>
+            
+            <div class="hero-socials-overlay">
+                <a href="#" class="social-link" data-social="instagram" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="#" class="social-link" data-social="telegram" aria-label="Telegram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </a>
+                <a href="#" class="social-link" data-social="x" aria-label="X (Twitter)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"></path><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path></svg>
+                </a>
+                <a href="#" class="social-link" data-social="facebook" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="#" class="social-link" data-social="tiktok" aria-label="TikTok">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- Cabeçalho Centralizado (Novo para o redesign) -->
         <header class="page-header">
             <h1 class="creator-name">Raiane Leite</h1>
             <p class="creator-tagline">A melhor parte fica aqui 🔥</p>
         </header>
 
-        <!-- Container dos Cards (JS injeta aqui) -->
+        <!-- Container dos Cards (Onde o main.js injeta os cards) -->
         <section class="cards-section" aria-label="Links oficiais">
-            <div id="cards-container" class="cards-list"></div>
+            <div id="cards-container" class="cards-grid"></div>
         </section>
+
+        <!-- Rodapé (Preservado) -->
+        <footer class="site-footer">
+            <div class="footer-divider">♡</div>
+            <p class="footer-text">Raiane Leite © 2024</p>
+        </footer>
 
         <!-- Mensagem fallback (preservada) -->
         <noscript>
@@ -78,7 +132,7 @@
 
     </main>
 
-    <!-- Scripts (preservados) -->
+    <!-- Scripts (Caminho original preservado) -->
     <script src="main.js"></script>
 
 </body>
