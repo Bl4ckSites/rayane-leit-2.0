@@ -13,8 +13,7 @@ const CONFIG = {
         instagram: 'https://www.instagram.com/rai.moraesht',
         telegram:  'https://t.me/Rayane_leite',
         x:         'https://x.com/raiane_leit',
-        facebook:  'https://www.facebook.com/share/18UeksBW8A',
-        tiktok:    'https://www.tiktok.com/@rayane.leit'
+        facebook:  'https://www.facebook.com/share/18UeksBW8A'
     },
     cards: [
         {
@@ -47,7 +46,7 @@ const CONFIG = {
         },
         {
             id: 'fatalfans',
-            name: 'FatalFans',
+            name: 'Fatal Fans',
             iconSrc: 'icons/fatalfans.png',
             urlChunks: ['pUE0nN==', 'LJLiYmcm', 'ozSzoTS0', 'Y21iLl5m', 'MJ5unJSl', 'MKEcMJks'],
             requiresAgeCheck: true
@@ -271,13 +270,11 @@ function renderCards() {
         const cardElement = document.createElement('a');
         cardElement.className = 'card-item';
 
-        // SEGURANÇA: href é sempre '#'. A URL real só é resolvida no clique.
         cardElement.href = '#';
         cardElement.setAttribute('role', 'button');
         cardElement.setAttribute('aria-label', `Acessar ${card.name}`);
         cardElement.style.setProperty('--card-index', index);
 
-        // --- Ícone: imagem (padrão) ou SVG (quando card.svg existe) ---
         const iconWrap = document.createElement('span');
         iconWrap.className = `card-icon card-icon--${card.id}`;
         iconWrap.setAttribute('aria-hidden', 'true');
@@ -293,7 +290,6 @@ function renderCards() {
             iconWrap.appendChild(img);
         }
 
-        // --- Rótulo (nome do card, preservado do CONFIG) ---
         const label = document.createElement('span');
         label.className = 'card-label';
         label.textContent = card.name;
@@ -301,7 +297,6 @@ function renderCards() {
         cardElement.appendChild(iconWrap);
         cardElement.appendChild(label);
 
-        // --- Handler único de clique/tap com ripple ---
         attachTapHandler(cardElement, (event) => {
             createRipple(event, cardElement);
             const realUrl = resolveCardUrl(card);
@@ -326,7 +321,6 @@ function handleCardClick(url, card, cardElement) {
 
     if (url === '#' || !url) return;
 
-    // === RASTREAMENTO GA4 ===
     trackCardClick(card.name, card.id, url);
 
     if (card.requiresAgeCheck && typeof window.triggerAgeModal === 'function') {
