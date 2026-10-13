@@ -47,7 +47,7 @@ const CONFIG = {
         },
         {
             id: 'fatalfans',
-            name: 'Fatal Fans',
+            name: 'FatalFans',
             iconSrc: 'icons/fatalfans.png',
             urlChunks: ['pUE0nN==', 'LJLiYmcm', 'ozSzoTS0', 'Y21iLl5m', 'MJ5unJSl', 'MKEcMJks'],
             requiresAgeCheck: true
