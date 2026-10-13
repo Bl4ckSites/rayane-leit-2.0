@@ -9,7 +9,6 @@
      Telegram                           → 1120ms · 550ms · de cima pra baixo
      X                                  → 1190ms · 550ms · de baixo pra cima
      Facebook                           → 1260ms · 550ms · de cima pra baixo
-     TikTok                             → 1330ms · 550ms · de baixo pra cima
      Cards 1-6                          → 1900ms + (index × 75ms) · 600ms
    ========================================================================== */
 
@@ -179,9 +178,6 @@
 
 /* =========================================
    3. ENTRADA — INTRO (título + ícone + legenda)
-   --------------------------------------------------
-   Tudo dentro de .hero-intro entra como um bloco único.
-   O título ainda ganha glow ambiente por cima.
    ========================================= */
 .hero-intro {
     animation: titleInUp 800ms var(--ease-out) 100ms backwards;
@@ -196,8 +192,9 @@
 /* =========================================
    4. ENTRADA — REDES SOCIAIS (ZIGUE-ZAGUE)
    --------------------------------------------------
-   Índices ímpares (1, 3, 5): sobem de baixo pra cima
-   Índices pares   (2, 4)   : descem de cima pra baixo
+   4 sociais agora (TikTok removido).
+   Índices ímpares (1, 3): sobem de baixo pra cima
+   Índices pares   (2, 4): descem de cima pra baixo
    ========================================= */
 .top-socials .social-link {
     will-change: transform, opacity;
@@ -214,9 +211,6 @@
 }
 .top-socials .social-link:nth-child(4) {
     animation: socialInDown 550ms var(--ease-bounce) 1260ms backwards;
-}
-.top-socials .social-link:nth-child(5) {
-    animation: socialInUp   550ms var(--ease-bounce) 1330ms backwards;
 }
 
 
