@@ -1,6 +1,6 @@
 /* ==========================================================================
    RAIANE LEIT — main.js
-   Cards redesenhados em glassmorphism: ícone SVG + rótulo de texto.
+   Cards: glass + SVG + texto (sem imagens .webp)
    ========================================================================== */
 'use strict';
 
@@ -19,48 +19,41 @@ const CONFIG = {
         {
             id: 'privacy',
             name: 'Privacy',
-            image: 'cards/card1.webp',
             url: 'https://privacy.com.br/checkout/Rayanne_leite',
             requiresAgeCheck: true
         },
         {
             id: 'vip',
             name: 'Telegram VIP',
-            image: 'cards/card2.webp',
             urlChunks: ['nN==', 'YmcmpUE0', 'Y2IgYaDi', 'nJIZnJSF', 'qT9vK2I0'],
             requiresAgeCheck: true
         },
         {
             id: 'exclusivos',
             name: 'Exclusivos',
-            image: 'cards/card3.webp',
             urlChunks: ['qTt=', 'Yl86p3O0', 'paOeozyf', 'pUOuYaMc', 'ozScLKVi', 'MKEcMJky'],
             requiresAgeCheck: true
         },
         {
             id: 'onlyfans',
             name: 'OnlyFans',
-            image: 'cards/card4.webp',
             urlChunks: ['qTt=', 'Yl86p3O0', 'LJM5oT5i', 'oJ9wYaAh', 'ozS5LKVi', 'qTyyoP5y'],
             requiresAgeCheck: true
         },
         {
             id: 'fatalfans',
             name: 'Fatal Fans',
-            image: 'cards/card5.webp',
             urlChunks: ['pUE0nN==', 'LJLiYmcm', 'ozSzoTS0', 'Y21iLl5m', 'MJ5unJSl', 'MKEcMJks'],
             requiresAgeCheck: true
         },
         {
             id: 'free',
             name: 'Telegram Free',
-            image: 'cards/card6.webp',
             urlChunks: ['nN==', 'YmcmpUE0', 'Y2IgYaDi', 'MJ5urJSF', 'MKEcMJks'],
             requiresAgeCheck: true
         }
     ],
     // Vídeo de fundo desativado: usamos raiane-bg.jpg em .page-bg.
-    // O breakpoint é inalcançável para impedir a criação do <video>.
     video: { src: 'imgs/desktop-background.mp4', breakpoint: 99999 }
 };
 
@@ -72,7 +65,6 @@ const TIMINGS = {
 
 /* =============================================================
    ÍCONES SVG — embutidos por id de card
-   Cada string é um <svg> completo, colorido por currentColor.
 ============================================================= */
 const ICONS = {
     privacy:
@@ -106,7 +98,6 @@ const ICONS = {
             '<path d="M11.9 6.6 6.6 1.9C5.4.8 3.4 1.5 3.4 3.2v17.6c0 1.7 2 2.4 3.2 1.3l5.3-4.7 5.3 4.7c1.2 1.1 3.2.4 3.2-1.3V3.2c0-1.7-2-2.4-3.2-1.3l-5.3 4.7z"/>' +
         '</svg>',
 
-    // Fallback visual de "Telegram Free" (reutiliza ícone do Telegram)
     free:
         '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">' +
             '<path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>' +
@@ -114,7 +105,7 @@ const ICONS = {
 };
 
 /* =============================================================
-   GA4 — rastreamento de cliques nos cards
+   GA4
 ============================================================= */
 function trackCardClick(cardName, cardId, destinationUrl) {
     if (typeof window.gtag !== 'function') return;
@@ -285,7 +276,7 @@ function initSocialLinks() {
 }
 
 /* =============================================================
-   RENDER CARDS — versão glassmorphism (ícone SVG + rótulo)
+   RENDER CARDS — glass + SVG + texto
 ============================================================= */
 function renderCards() {
     const container = document.getElementById('cards-container');
@@ -295,19 +286,16 @@ function renderCards() {
         const cardElement = document.createElement('a');
         cardElement.className = 'card-item';
 
-        // SEGURANÇA: href é sempre '#'. A URL real só é resolvida no clique.
         cardElement.href = '#';
         cardElement.setAttribute('role', 'button');
         cardElement.setAttribute('aria-label', `Acessar ${card.name}`);
         cardElement.style.setProperty('--card-index', index);
 
-        // Ícone (SVG inline)
         const iconWrap = document.createElement('span');
         iconWrap.className = `card-icon card-icon--${card.id}`;
         iconWrap.setAttribute('aria-hidden', 'true');
         iconWrap.innerHTML = ICONS[card.id] || '';
 
-        // Rótulo (nome do card, preservado do CONFIG)
         const label = document.createElement('span');
         label.className = 'card-label';
         label.textContent = card.name;
@@ -334,7 +322,6 @@ function handleCardClick(url, card, cardElement) {
 
     if (url === '#' || !url) return;
 
-    // === RASTREAMENTO GA4 ===
     trackCardClick(card.name, card.id, url);
 
     if (card.requiresAgeCheck && typeof window.triggerAgeModal === 'function') {
@@ -447,8 +434,7 @@ function initModal() {
 }
 
 /* =============================================================
-   VÍDEO DE FUNDO — mantido por compatibilidade, porém inativo
-   (breakpoint 99999 impede a criação; CSS também oculta as camadas)
+   VÍDEO DE FUNDO — mantido por compatibilidade, inativo
 ============================================================= */
 function initDesktopVideo() {
     const container = document.getElementById('video-background-container');
@@ -497,9 +483,7 @@ function initDesktopVideo() {
             overlay.classList.remove('active');
         });
 
-        video.addEventListener('loadeddata', () => {
-            tryPlay(video);
-        }, { once: true });
+        video.addEventListener('loadeddata', () => { tryPlay(video); }, { once: true });
 
         container.appendChild(video);
         container.classList.add('active');
