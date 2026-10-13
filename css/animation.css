@@ -1,16 +1,16 @@
 /* ==========================================================================
    RAIANE LEIT — animation.css
-   Animações: entrada (título → socials em zigue-zague → cards) + interações.
+   Animações: entrada (intro → socials em zigue-zague → cards) + interações.
    --------------------------------------------------------------------------
    Ordem de carregamento: style.css → animation.css (este sobrescreve).
-   Timeline de entrada:
-     Título      → 100ms  · 800ms  · de baixo pra cima + blur→foco
-     Instagram   → 1050ms · 550ms  · de baixo pra cima
-     Telegram    → 1120ms · 550ms  · de cima pra baixo
-     X           → 1190ms · 550ms  · de baixo pra cima
-     Facebook    → 1260ms · 550ms  · de cima pra baixo
-     TikTok      → 1330ms · 550ms  · de baixo pra cima
-     Cards 1-6   → 1900ms + (index × 75ms) · 600ms · de baixo + blur→foco
+   Timeline:
+     Intro (título + ícone + legenda)  → 100ms  · 800ms
+     Instagram                          → 1050ms · 550ms · de baixo pra cima
+     Telegram                           → 1120ms · 550ms · de cima pra baixo
+     X                                  → 1190ms · 550ms · de baixo pra cima
+     Facebook                           → 1260ms · 550ms · de cima pra baixo
+     TikTok                             → 1330ms · 550ms · de baixo pra cima
+     Cards 1-6                          → 1900ms + (index × 75ms) · 600ms
    ========================================================================== */
 
 
@@ -178,13 +178,18 @@
 
 
 /* =========================================
-   3. ENTRADA — TÍTULO
+   3. ENTRADA — INTRO (título + ícone + legenda)
+   --------------------------------------------------
+   Tudo dentro de .hero-intro entra como um bloco único.
+   O título ainda ganha glow ambiente por cima.
    ========================================= */
+.hero-intro {
+    animation: titleInUp 800ms var(--ease-out) 100ms backwards;
+}
+
 .hero-title {
-    animation:
-        titleInUp  800ms var(--ease-out) 100ms backwards,
-        titleGlow  6s    var(--ease-in-out) 1000ms infinite;
-    will-change: transform, opacity, filter;
+    animation: titleGlow 6s var(--ease-in-out) 1000ms infinite;
+    will-change: filter;
 }
 
 
@@ -247,19 +252,16 @@
     transition: transform 90ms var(--ease-out);
 }
 
-/* Pulso ao clicar */
 .card-item.card-pulse {
     animation: cardPulse 420ms var(--ease-bounce);
 }
 
-/* Burst no ícone ao clicar */
 .card-item.card-pulse .card-icon,
 .card-item.card-pulse .card-icon img,
 .card-item.card-pulse .card-icon svg {
     animation: iconBurst 420ms var(--ease-bounce);
 }
 
-/* Ícone reage suavemente no hover */
 .card-icon {
     transition: transform var(--anim-slow) var(--ease-out);
 }
@@ -279,7 +281,7 @@
     background: linear-gradient(
         105deg,
         transparent 40%,
-        rgba(255, 255, 255, 0.18) 50%,
+        rgba(255, 255, 255, 0.22) 50%,
         transparent 60%
     );
     transform: translateX(-120%);
