@@ -1,6 +1,6 @@
 /* ==========================================================================
    RAIANE LEIT — style.css
-   Layout limpo: fundo fixo + título grande + cards escuros sólidos.
+   Layout: fundo fixo + título com ícone + legenda + cards com borda branca.
    --------------------------------------------------------------------------
    Camadas (do fundo para frente):
      0     → .page-bg                        (raiane-bg.jpg fixa + overlay)
@@ -18,15 +18,15 @@
     --color-text-soft: rgba(255, 255, 255, 0.75);
     --color-accent: #E8353C;
 
-    /* Cards — fundo escuro sólido (SEM blur) */
-    --card-bg:              rgba(12, 12, 14, 0.65);
-    --card-bg-hover:        rgba(28, 28, 32, 0.80);
-    --card-border:          rgba(255, 255, 255, 0.06);
-    --card-border-hover:    rgba(255, 255, 255, 0.18);
-    --card-shadow:          0 8px 28px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    --card-shadow-hover:    0 12px 34px rgba(0, 0, 0, 0.50), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    /* Cards — vidro claro com borda branca visível */
+    --card-bg:              rgba(255, 255, 255, 0.08);
+    --card-bg-hover:        rgba(255, 255, 255, 0.16);
+    --card-border:          rgba(255, 255, 255, 0.50);
+    --card-border-hover:    rgba(255, 255, 255, 0.72);
+    --card-shadow:          0 8px 28px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    --card-shadow-hover:    0 12px 34px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.24);
 
-    /* Social links — vidro leve (não ofende visualmente) */
+    /* Social links — vidro leve */
     --social-bg:            rgba(255, 255, 255, 0.06);
     --social-bg-hover:      rgba(255, 255, 255, 0.16);
     --social-border:        rgba(255, 255, 255, 0.12);
@@ -128,7 +128,7 @@ body.modal-active {
 
 
 /* =========================================
-   5. HERO — TÍTULO + REDES SOCIAIS
+   5. HERO — TÍTULO + ÍCONE + LEGENDA + SOCIALS
    ========================================= */
 .hero-section {
     display: flex;
@@ -136,12 +136,35 @@ body.modal-active {
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: clamp(14px, 2.5vh, 24px);
+    gap: clamp(16px, 3vh, 28px);
     padding: clamp(4px, 1.5vh, 16px) 0;
 }
 
-.hero-title {
+/* Wrapper do título + legenda (entram juntos) */
+.hero-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(6px, 1.2vh, 10px);
+    text-align: center;
+    width: 100%;
+}
+
+/* Linha do título (h1 + ícone) */
+.hero-title-row {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(10px, 2.5vw, 18px);
+
+    /* Fonte base que define tamanho do título E do ícone */
     font-size: clamp(2.6rem, 10vw, 4.2rem);
+    line-height: 1;
+}
+
+.hero-title {
+    font-size: 1em;
     font-weight: 700;
     line-height: 1.06;
     letter-spacing: -0.03em;
@@ -149,6 +172,33 @@ body.modal-active {
     text-shadow:
         0 2px 28px rgba(0, 0, 0, 0.65),
         0 1px 4px rgba(0, 0, 0, 0.50);
+}
+
+/* Ícone circular ao lado do título — mesma altura, não corta */
+.hero-title-icon {
+    width: 1em;
+    height: 1em;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Legenda abaixo do título */
+.hero-subtitle {
+    font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+    font-weight: 500;
+    line-height: 1.35;
+    color: #fff;
+    letter-spacing: 0.005em;
+    text-align: center;
+    text-shadow:
+        0 2px 20px rgba(0, 0, 0, 0.65),
+        0 1px 3px rgba(0, 0, 0, 0.45);
+    max-width: 100%;
+    padding: 0 clamp(4px, 2vw, 12px);
 }
 
 
@@ -188,7 +238,7 @@ body.modal-active {
 
 
 /* =========================================
-   7. CARDS — FUNDO ESCURO SÓLIDO (SEM BLUR)
+   7. CARDS — VIDRO CLARO COM BORDA BRANCA
    ========================================= */
 .cards-section {
     width: 100%;
@@ -250,14 +300,14 @@ body.modal-active {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.60);
     position: relative;
     z-index: 1;
 }
 
 
 /* =========================================
-   8. ÍCONE DO CARD
+   8. ÍCONE DO CARD (intocado)
    ========================================= */
 .card-icon {
     position: absolute;
