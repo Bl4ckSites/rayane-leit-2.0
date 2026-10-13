@@ -213,4 +213,338 @@ function createRipple(event, element) {
     ripple.style.top    = y + 'px';
 
     element.appendChild(ripple);
-    ripple.addEventListener('animationend', () => ripple
+    ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
+}
+
+/* =============================================================
+   TAP HELPER
+============================================================= */
+const TAP_MAX_DISTANCE = 10;
+const TAP_MAX_DURATION = 500;
+
+function attachTapHandler(element, handler) {
+    let startX = 0, startY = 0, startTime = 0;
+    let isTap = false;
+    let lastHandled = 0;
+
+    const run = (event) => {
+        const now = Date.now();
+        if (now - lastHandled < 400) return;
+        lastHandled = now;
+        playClickSound();
+        handler(event);
+    };
+
+    element.addEventListener('touchstart', (e) => {
+        const t = e.changedTouches[0];
+        startX = t.clientX;
+        startY = t.clientY;
+        startTime = Date.now();
+        isTap = true;
+    }, { passive: true });
+
+    element.addEventListener('touchmove', (e) => {
+        if (!isTap) return;
+        const t = e.changedTouches[0];
+        if (Math.abs(t.clientX - startX) > TAP_MAX_DISTANCE || Math.abs(t.clientY - startY) > TAP_MAX_DISTANCE) {
+            isTap = false;
+        }
+    }, { passive: true });
+
+    element.addEventListener('touchend', (e) => {
+        if (!isTap) return;
+        if (Date.now() - startTime > TAP_MAX_DURATION) return;
+        const t = e.changedTouches[0];
+        if (Math.abs(t.clientX - startX) > TAP_MAX_DISTANCE || Math.abs(t.clientY - startY) > TAP_MAX_DISTANCE) return;
+
+        e.preventDefault();
+        run({ clientX: t.clientX, clientY: t.clientY, currentTarget: element, target: e.target });
+    }, { passive: false });
+
+    element.addEventListener('click', (e) => {
+        e.preventDefault();
+        run({ clientX: e.clientX, clientY: e.clientY, currentTarget: element, target: e.target });
+    });
+}
+
+/* =============================================================
+   INIT
+============================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    initSocialLinks();
+    renderCards();
+    initModal();
+    initDesktopVideo();
+});
+
+function initSocialLinks() {
+    document.querySelectorAll('.social-link[data-social]').forEach(link => {
+        const platform = link.getAttribute('data-social');
+        if (CONFIG.socials[platform]) link.href = CONFIG.socials[platform];
+    });
+}
+
+/* =============================================================
+   RENDER CARDS — versão glassmorphism (ícone SVG + rótulo)
+============================================================= */
+function renderCards() {
+    const container = document.getElementById('cards-container');
+    if (!container) return;
+
+    CONFIG.cards.forEach((card, index) => {
+        const cardElement = document.createElement('a');
+        cardElement.className = 'card-item';
+
+        // SEGURANÇA: href é sempre '#'. A URL real só é resolvida no clique.
+        cardElement.href = '#';
+        cardElement.setAttribute('role', 'button');
+        cardElement.setAttribute('aria-label', `Acessar ${card.name}`);
+        cardElement.style.setProperty('--card-index', index);
+
+        // Ícone (SVG inline)
+        const iconWrap = document.createElement('span');
+        iconWrap.className = `card-icon card-icon--${card.id}`;
+        iconWrap.setAttribute('aria-hidden', 'true');
+        iconWrap.innerHTML = ICONS[card.id] || '';
+
+        // Rótulo (nome do card, preservado do CONFIG)
+        const label = document.createElement('span');
+        label.className = 'card-label';
+        label.textContent = card.name;
+
+        cardElement.appendChild(iconWrap);
+        cardElement.appendChild(label);
+
+        attachTapHandler(cardElement, () => {
+            const realUrl = resolveCardUrl(card);
+            handleCardClick(realUrl, card, cardElement);
+        });
+
+        container.appendChild(cardElement);
+    });
+}
+
+function handleCardClick(url, card, cardElement) {
+    if (cardElement && !prefersReducedMotion.matches) {
+        cardElement.classList.add('card-pulse');
+        cardElement.addEventListener('animationend', () => {
+            cardElement.classList.remove('card-pulse');
+        }, { once: true });
+    }
+
+    if (url === '#' || !url) return;
+
+    // === RASTREAMENTO GA4 ===
+    trackCardClick(card.name, card.id, url);
+
+    if (card.requiresAgeCheck && typeof window.triggerAgeModal === 'function') {
+        window.triggerAgeModal(url);
+    } else {
+        window.location.href = url;
+    }
+}
+
+/* =============================================================
+   MODAL +18
+============================================================= */
+function initModal() {
+    const modal      = document.getElementById('age-modal');
+    const closeBtn   = document.getElementById('modal-close');
+    const confirmBtn = document.getElementById('modal-confirm');
+    const cancelBtn  = document.getElementById('modal-cancel');
+
+    if (!modal) return;
+
+    let selectedDestination = null;
+    let previouslyFocusedElement = null;
+    let closeTimer = null;
+
+    function calculateScrollbarWidth() {
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.body.style.setProperty('--scrollbar-compensation', scrollbarWidth + 'px');
+    }
+
+    const openModal = () => {
+        clearTimeout(closeTimer);
+        previouslyFocusedElement = document.activeElement;
+        calculateScrollbarWidth();
+
+        if (closeBtn) closeBtn.classList.remove('is-closing');
+        modal.classList.remove('is-closing');
+        modal.classList.remove('active');
+
+        modal.hidden = false;
+        document.body.classList.add('modal-active');
+
+        void modal.offsetHeight;
+        modal.classList.add('active');
+
+        if (confirmBtn) confirmBtn.focus();
+    };
+
+    const closeModal = () => {
+        if (modal.hidden || modal.classList.contains('is-closing')) return;
+
+        modal.classList.add('is-closing');
+        modal.classList.remove('active');
+        document.body.classList.remove('modal-active');
+
+        clearTimeout(closeTimer);
+        closeTimer = setTimeout(() => {
+            modal.hidden = true;
+            modal.classList.remove('is-closing');
+            if (closeBtn) closeBtn.classList.remove('is-closing');
+
+            if (previouslyFocusedElement && previouslyFocusedElement.focus) {
+                previouslyFocusedElement.focus();
+            }
+        }, TIMINGS.FADE_MS);
+
+        selectedDestination = null;
+    };
+
+    const closeBtnHandler = () => {
+        if (closeBtn.classList.contains('is-closing')) return;
+        closeBtn.classList.add('is-closing');
+        setTimeout(() => { closeModal(); }, TIMINGS.ROTATION_MS);
+    };
+
+    const confirmAndGo = () => {
+        if (!selectedDestination) { closeModal(); return; }
+        const url = selectedDestination;
+        closeModal();
+        setTimeout(() => { window.location.href = url; }, TIMINGS.FADE_MS + 50);
+    };
+
+    if (closeBtn) attachTapHandler(closeBtn, closeBtnHandler);
+
+    if (cancelBtn) {
+        attachTapHandler(cancelBtn, (e) => {
+            createRipple(e, cancelBtn);
+            closeModal();
+        });
+    }
+
+    if (confirmBtn) {
+        attachTapHandler(confirmBtn, (e) => {
+            createRipple(e, confirmBtn);
+            confirmAndGo();
+        });
+    }
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+
+    window.triggerAgeModal = (url) => {
+        selectedDestination = url;
+        openModal();
+    };
+}
+
+/* =============================================================
+   VÍDEO DE FUNDO — mantido por compatibilidade, porém inativo
+   (breakpoint 99999 impede a criação; CSS também oculta as camadas)
+============================================================= */
+function initDesktopVideo() {
+    const container = document.getElementById('video-background-container');
+    const overlay   = document.querySelector('.video-overlay');
+    if (!container || !overlay) return;
+
+    let currentVideo = null;
+
+    function tryPlay(video) {
+        const p = video.play();
+        if (p && typeof p.catch === 'function') {
+            p.catch((err) => {
+                console.warn('[video] Autoplay bloqueado:', err && err.name);
+                const resume = () => {
+                    video.play().catch(() => {});
+                    document.removeEventListener('click', resume);
+                    document.removeEventListener('touchstart', resume);
+                    document.removeEventListener('keydown', resume);
+                };
+                document.addEventListener('click', resume, { once: true });
+                document.addEventListener('touchstart', resume, { once: true });
+                document.addEventListener('keydown', resume, { once: true });
+            });
+        }
+    }
+
+    function createVideo() {
+        const video = document.createElement('video');
+        video.src = CONFIG.video.src;
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.preload = 'auto';
+        video.setAttribute('muted', '');
+        video.setAttribute('autoplay', '');
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.setAttribute('aria-hidden', 'true');
+        video.setAttribute('disablepictureinpicture', '');
+        video.setAttribute('tabindex', '-1');
+
+        video.addEventListener('error', () => {
+            console.error('[video] FALHA ao carregar:', CONFIG.video.src);
+            container.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        video.addEventListener('loadeddata', () => {
+            tryPlay(video);
+        }, { once: true });
+
+        container.appendChild(video);
+        container.classList.add('active');
+        overlay.classList.add('active');
+
+        tryPlay(video);
+        currentVideo = video;
+    }
+
+    function destroyVideo() {
+        if (!currentVideo) return;
+        try { currentVideo.pause(); } catch (_) {}
+        currentVideo.removeAttribute('src');
+        try { currentVideo.load(); } catch (_) {}
+        container.innerHTML = '';
+        container.classList.remove('active');
+        overlay.classList.remove('active');
+        currentVideo = null;
+    }
+
+    const checkDesktop = () => {
+        const isDesktop = window.matchMedia(`(min-width: ${CONFIG.video.breakpoint}px)`).matches;
+        const hasVideo  = !!container.querySelector('video');
+
+        if (isDesktop && !hasVideo) {
+            createVideo();
+        } else if (!isDesktop && hasVideo) {
+            destroyVideo();
+        }
+    };
+
+    checkDesktop();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(checkDesktop, 200);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+        if (!currentVideo) return;
+        if (document.hidden) {
+            try { currentVideo.pause(); } catch (_) {}
+        } else {
+            tryPlay(currentVideo);
+        }
+    });
+}
