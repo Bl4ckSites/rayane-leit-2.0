@@ -156,7 +156,7 @@ body.modal-active {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: clamp(10px, 2.5vw, 18px);
+    gap: clamp(8px, 2vw, 14px);
 
     /* Fonte base que define tamanho do título E do ícone */
     font-size: clamp(2.6rem, 10vw, 4.2rem);
@@ -174,10 +174,10 @@ body.modal-active {
         0 1px 4px rgba(0, 0, 0, 0.50);
 }
 
-/* Ícone circular ao lado do título — mesma altura, não corta */
+/* Ícone de verificado ao lado do título — 50% do tamanho do título */
 .hero-title-icon {
-    width: 1em;
-    height: 1em;
+    width: 0.5em;
+    height: 0.5em;
     object-fit: contain;
     display: block;
     flex-shrink: 0;
