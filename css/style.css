@@ -153,21 +153,21 @@ body.modal-active {
 }
 
 .hero-title {
-    font-size: clamp(1.85rem, 6vw, 2.4rem);
+    font-size: clamp(2.4rem, 9vw, 3.6rem);
     font-weight: 700;
-    line-height: 1.12;
-    letter-spacing: -0.02em;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
     color: #fff;
     text-shadow:
-        0 2px 22px rgba(0, 0, 0, 0.55),
-        0 1px 3px rgba(0, 0, 0, 0.40);
+        0 2px 26px rgba(0, 0, 0, 0.60),
+        0 1px 3px rgba(0, 0, 0, 0.45);
 }
 
 
 /* =========================================
    7. REDES SOCIAIS — BOTÕES RESPONSIVOS
    --------------------------------------------------
-   Botão: clamp(38px → 50px) acompanha a viewport.
+   Botão: clamp(32px → 40px) acompanha a viewport.
    SVG:   45% do botão (escala junto, sempre).
    ========================================= */
 .top-socials {
@@ -175,15 +175,15 @@ body.modal-active {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: clamp(6px, 1.6vw, 12px);
+    gap: clamp(6px, 1.6vw, 10px);
     width: 100%;
 }
 
 .social-link {
     display: inline-grid;
     place-items: center;
-    width: clamp(38px, 10vw, 50px);
-    height: clamp(38px, 10vw, 50px);
+    width: clamp(32px, 7vw, 40px);
+    height: clamp(32px, 7vw, 40px);
     border-radius: var(--radius-circle);
     color: #fff;
     background: rgba(255, 255, 255, 0.06);
