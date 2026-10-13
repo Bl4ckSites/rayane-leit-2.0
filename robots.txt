@@ -1,0 +1,83 @@
+# ============================================================
+# robots.txt — Raiane Leite
+# ============================================================
+
+# Google pode indexar a página de texto, mas NÃO as imagens
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Disallow: /
+
+# Bing também pode indexar a página, mas não as imagens
+User-agent: Bingbot
+Allow: /
+
+User-agent: Bingbot-Image
+Disallow: /
+
+# ------------------------------------------------------------
+# Robôs do Meta (Instagram, Facebook, WhatsApp)
+# ------------------------------------------------------------
+User-agent: facebookexternalhit
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: facebot
+Disallow: /
+
+# ------------------------------------------------------------
+# Outros previews sociais que podem vazar conteúdo
+# ------------------------------------------------------------
+User-agent: Twitterbot
+Disallow: /
+
+User-agent: TelegramBot
+Disallow: /
+
+User-agent: WhatsApp
+Disallow: /
+
+User-agent: LinkedInBot
+Disallow: /
+
+User-agent: Pinterestbot
+Disallow: /
+
+User-agent: Discordbot
+Disallow: /
+
+User-agent: Slackbot
+Disallow: /
+
+# ------------------------------------------------------------
+# Scrapers de IA
+# ------------------------------------------------------------
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+# ------------------------------------------------------------
+# Qualquer outro bot: bloqueado por padrão
+# ------------------------------------------------------------
+User-agent: *
+Disallow: /
+
+# Sitemap (URL corrigida para o seu domínio real)
+Sitemap: https://raianeleite.com/sitemap.xml
