@@ -1,15 +1,15 @@
 /* ==========================================================================
    RAIANE LEIT — animation.css
-   Animações: entrada (intro → socials em zigue-zague → cards) + interações.
+   Animações: entrada rápida (intro → socials) + interações.
    --------------------------------------------------------------------------
    Ordem de carregamento: style.css → animation.css (este sobrescreve).
-   Timeline:
-     Intro (título + ícone + legenda)  → 100ms  · 800ms
-     Instagram                          → 1050ms · 550ms · de baixo pra cima
-     Telegram                           → 1120ms · 550ms · de cima pra baixo
-     X                                  → 1190ms · 550ms · de baixo pra cima
-     Facebook                           → 1260ms · 550ms · de cima pra baixo
-     Cards 1-6                          → 1900ms + (index × 75ms) · 600ms
+   Timeline (rápida):
+     Intro (título + ícone + legenda)  → 80ms · 400ms
+     Instagram                          → 480ms · 320ms · de baixo pra cima
+     Telegram                           → 540ms · 320ms · de cima pra baixo
+     X                                  → 600ms · 320ms · de baixo pra cima
+     Facebook                           → 660ms · 320ms · de cima pra baixo
+     Cards                              → SEM animação de entrada
    ========================================================================== */
 
 
@@ -17,21 +17,20 @@
    0. VARIÁVEIS DE ANIMAÇÃO
    ========================================= */
 :root {
-    --anim-fast:    150ms;
-    --anim-base:    200ms;
-    --anim-slow:    300ms;
-    --anim-slower:  400ms;
-    --anim-card-in: 600ms;
-    --anim-modal:   250ms;
-    --anim-ripple:  650ms;
+    --anim-fast:    130ms;
+    --anim-base:    180ms;
+    --anim-slow:    260ms;
+    --anim-slower:  340ms;
+    --anim-modal:   220ms;
+    --anim-ripple:  550ms;
 
     --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-    --press-scale:       0.96;
+    --press-scale:       0.97;
     --press-scale-soft:  0.98;
-    --hover-scale:       1.06;
+    --hover-scale:       1.05;
     --card-hover-scale:  1.02;
 }
 
@@ -44,10 +43,10 @@
 @keyframes titleInUp {
     0% {
         opacity: 0;
-        transform: translateY(42px) scale(0.92);
-        filter: blur(7px);
+        transform: translateY(24px) scale(0.96);
+        filter: blur(4px);
     }
-    55% {
+    60% {
         filter: blur(0);
     }
     100% {
@@ -60,10 +59,10 @@
 @keyframes socialInUp {
     0% {
         opacity: 0;
-        transform: translateY(24px) scale(0.7);
+        transform: translateY(16px) scale(0.8);
     }
-    65% {
-        transform: translateY(-3px) scale(1.06);
+    70% {
+        transform: translateY(-2px) scale(1.04);
     }
     100% {
         opacity: 1;
@@ -74,44 +73,28 @@
 @keyframes socialInDown {
     0% {
         opacity: 0;
-        transform: translateY(-24px) scale(0.7);
+        transform: translateY(-16px) scale(0.8);
     }
-    65% {
-        transform: translateY(3px) scale(1.06);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes cardFadeUp {
-    0% {
-        opacity: 0;
-        transform: translateY(30px) scale(0.97);
-        filter: blur(4px);
-    }
-    55% {
-        filter: blur(0);
+    70% {
+        transform: translateY(2px) scale(1.04);
     }
     100% {
         opacity: 1;
         transform: translateY(0) scale(1);
-        filter: blur(0);
     }
 }
 
 /* ---------- Feedback de clique ---------- */
 @keyframes cardPulse {
-    0%   { transform: scale(0.96); }
-    45%  { transform: scale(1.03); }
+    0%   { transform: scale(0.97); }
+    45%  { transform: scale(1.02); }
     100% { transform: scale(1); }
 }
 
 @keyframes iconBurst {
     0%   { transform: scale(1)    rotate(0); }
-    40%  { transform: scale(1.28) rotate(-8deg); }
-    70%  { transform: scale(0.94) rotate(4deg); }
+    40%  { transform: scale(1.18) rotate(-6deg); }
+    70%  { transform: scale(0.96) rotate(3deg); }
     100% { transform: scale(1)    rotate(0); }
 }
 
@@ -125,12 +108,12 @@
     0%, 100% {
         box-shadow:
             0 0 0 3px rgba(255, 255, 255, 0.7),
-            0 0 22px rgba(232, 53, 60, 0.35);
+            0 0 18px rgba(232, 53, 60, 0.30);
     }
     50% {
         box-shadow:
             0 0 0 3px rgba(255, 255, 255, 0.9),
-            0 0 34px rgba(232, 53, 60, 0.60);
+            0 0 26px rgba(232, 53, 60, 0.50);
     }
 }
 
@@ -138,39 +121,40 @@
 @keyframes modalTitlePulse {
     0%, 100% {
         box-shadow:
-            0 0 24px rgba(255, 255, 255, 0.06),
-            inset 0 0 12px rgba(255, 255, 255, 0.05);
+            0 0 20px rgba(255, 255, 255, 0.06),
+            inset 0 0 10px rgba(255, 255, 255, 0.05);
     }
     50% {
         box-shadow:
-            0 0 34px rgba(232, 53, 60, 0.30),
-            0 0 60px rgba(232, 53, 60, 0.16),
-            inset 0 0 16px rgba(255, 255, 255, 0.10);
+            0 0 26px rgba(232, 53, 60, 0.22),
+            0 0 44px rgba(232, 53, 60, 0.12),
+            inset 0 0 12px rgba(255, 255, 255, 0.08);
     }
 }
 
 @keyframes crownBob {
     0%, 100% { transform: translateX(-50%) translateY(0); }
-    50%      { transform: translateX(-50%) translateY(-3px); }
+    50%      { transform: translateX(-50%) translateY(-2px); }
 }
 
-/* ---------- Ambiente ---------- */
+/* ---------- Ambiente (bem sutil) ---------- */
 @keyframes bgBreath {
     0%, 100% { transform: scale(1); }
-    50%      { transform: scale(1.06); }
+    50%      { transform: scale(1.02); }
 }
 
 @keyframes titleGlow {
     0%, 100% { filter: drop-shadow(0 2px 18px rgba(0, 0, 0, 0.55)); }
-    50%      { filter: drop-shadow(0 2px 26px rgba(255, 255, 255, 0.14)); }
+    50%      { filter: drop-shadow(0 2px 22px rgba(255, 255, 255, 0.10)); }
 }
 
 
 /* =========================================
-   2. FUNDO — RESPIRAÇÃO AMBIENTE
+   2. FUNDO — RESPIRAÇÃO AMBIENTE (REDUZIDA)
    ========================================= */
 .page-bg {
-    animation: bgBreath 22s var(--ease-in-out) infinite;
+    /* 22s → 40s, escala 1.06 → 1.02 (bem mais sutil) */
+    animation: bgBreath 40s var(--ease-in-out) infinite;
     will-change: transform;
     transform-origin: center center;
 }
@@ -180,11 +164,13 @@
    3. ENTRADA — INTRO (título + ícone + legenda)
    ========================================= */
 .hero-intro {
-    animation: titleInUp 800ms var(--ease-out) 100ms backwards;
+    /* 800ms → 400ms, delay 100ms → 80ms */
+    animation: titleInUp 400ms var(--ease-out) 80ms backwards;
 }
 
 .hero-title {
-    animation: titleGlow 6s var(--ease-in-out) 1000ms infinite;
+    /* glow mais lento e menos intenso */
+    animation: titleGlow 8s var(--ease-in-out) 600ms infinite;
     will-change: filter;
 }
 
@@ -192,7 +178,7 @@
 /* =========================================
    4. ENTRADA — REDES SOCIAIS (ZIGUE-ZAGUE)
    --------------------------------------------------
-   4 sociais agora (TikTok removido).
+   4 sociais (TikTok removido).
    Índices ímpares (1, 3): sobem de baixo pra cima
    Índices pares   (2, 4): descem de cima pra baixo
    ========================================= */
@@ -201,27 +187,23 @@
 }
 
 .top-socials .social-link:nth-child(1) {
-    animation: socialInUp   550ms var(--ease-bounce) 1050ms backwards;
+    animation: socialInUp   320ms var(--ease-bounce) 480ms backwards;
 }
 .top-socials .social-link:nth-child(2) {
-    animation: socialInDown 550ms var(--ease-bounce) 1120ms backwards;
+    animation: socialInDown 320ms var(--ease-bounce) 540ms backwards;
 }
 .top-socials .social-link:nth-child(3) {
-    animation: socialInUp   550ms var(--ease-bounce) 1190ms backwards;
+    animation: socialInUp   320ms var(--ease-bounce) 600ms backwards;
 }
 .top-socials .social-link:nth-child(4) {
-    animation: socialInDown 550ms var(--ease-bounce) 1260ms backwards;
+    animation: socialInDown 320ms var(--ease-bounce) 660ms backwards;
 }
 
 
 /* =========================================
-   5. ENTRADA — CARDS (CASCATA)
+   5. CARDS — SEM ANIMAÇÃO DE ENTRADA
    ========================================= */
-.card-item {
-    animation: cardFadeUp var(--anim-card-in) var(--ease-out) backwards;
-    animation-delay: calc(var(--card-index, 0) * 75ms + 1900ms);
-    will-change: transform, opacity, filter;
-}
+/* Entrada dos cards removida (cardFadeUp / card-index / delays). */
 
 
 /* =========================================
@@ -243,17 +225,17 @@
 
 .card-item:active {
     transform: scale(var(--press-scale-soft));
-    transition: transform 90ms var(--ease-out);
+    transition: transform 80ms var(--ease-out);
 }
 
 .card-item.card-pulse {
-    animation: cardPulse 420ms var(--ease-bounce);
+    animation: cardPulse 360ms var(--ease-bounce);
 }
 
 .card-item.card-pulse .card-icon,
 .card-item.card-pulse .card-icon img,
 .card-item.card-pulse .card-icon svg {
-    animation: iconBurst 420ms var(--ease-bounce);
+    animation: iconBurst 360ms var(--ease-bounce);
 }
 
 .card-icon {
@@ -262,7 +244,7 @@
 
 @media (hover: hover) {
     .card-item:hover .card-icon {
-        transform: translateY(-50%) scale(1.08);
+        transform: translateY(-50%) scale(1.06);
     }
 }
 
@@ -289,8 +271,8 @@
         opacity: 1;
         transform: translateX(120%);
         transition:
-            transform 900ms var(--ease-out),
-            opacity   150ms linear;
+            transform 750ms var(--ease-out),
+            opacity   140ms linear;
     }
 }
 
@@ -300,7 +282,7 @@
    ========================================= */
 .card-item:focus-visible {
     outline: none;
-    animation: cardFocusPulse 1.6s var(--ease-in-out) infinite;
+    animation: cardFocusPulse 1.8s var(--ease-in-out) infinite;
 }
 
 
@@ -342,8 +324,8 @@
 }
 
 .social-link:active {
-    transform: scale(0.88);
-    transition: transform 90ms var(--ease-out);
+    transform: scale(0.9);
+    transition: transform 80ms var(--ease-out);
 }
 
 
@@ -357,7 +339,7 @@
 }
 
 .modal-container {
-    transform: scale(0.94) translateY(10px);
+    transform: scale(0.95) translateY(8px);
     transition: transform var(--anim-modal) var(--ease-bounce);
     will-change: transform;
 }
@@ -374,7 +356,7 @@
 }
 
 .modal-overlay.is-closing .modal-container {
-    transform: scale(1.03) translateY(-4px);
+    transform: scale(1.02) translateY(-3px);
     transition: transform var(--anim-slow) var(--ease-in-out);
 }
 
@@ -398,12 +380,12 @@
 }
 
 .modal-close-btn:active {
-    transform: scale(0.9);
-    transition: transform 100ms var(--ease-out);
+    transform: scale(0.92);
+    transition: transform 90ms var(--ease-out);
 }
 
 .modal-close-btn.is-closing {
-    transform: rotate(180deg) scale(0.85);
+    transform: rotate(180deg) scale(0.88);
     transition:
         transform var(--anim-slower) var(--ease-bounce),
         opacity   var(--anim-slower) var(--ease-out);
@@ -436,7 +418,7 @@
 
 .modal-btn:active {
     transform: translateY(0) scale(var(--press-scale));
-    transition: transform 90ms var(--ease-out);
+    transition: transform 80ms var(--ease-out);
 }
 
 
@@ -444,9 +426,9 @@
    13. MODAL — CÍRCULO 18+ E COROA
    ========================================= */
 #modal-title {
-    animation: modalTitlePulse 3s var(--ease-in-out) infinite;
+    animation: modalTitlePulse 3.6s var(--ease-in-out) infinite;
 }
 
 #modal-title::before {
-    animation: crownBob 4s var(--ease-in-out) infinite;
+    animation: crownBob 5s var(--ease-in-out) infinite;
 }
