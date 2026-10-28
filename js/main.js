@@ -44,13 +44,13 @@ const CONFIG = {
             urlChunks: ['qTt=', 'Yl86p3O0', 'LJM5oT5i', 'oJ9wYaAh', 'ozS5LKVi', 'qTyyoP5y'],
             requiresAgeCheck: true
         },
-        {
+      /*  {
             id: 'fatalfans',
             name: 'Fatal Fans',
             iconSrc: 'icons/fatalfans.png',
             urlChunks: ['pUE0nN==', 'LJLiYmcm', 'ozSzoTS0', 'Y21iLl5m', 'MJ5unJSl', 'MKEcMJks'],
             requiresAgeCheck: true
-        },
+        }, */
         {
             id: 'free',
             name: 'Telegram Free',
